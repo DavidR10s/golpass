@@ -12,10 +12,28 @@ docker compose stop
 
 
 --GIT
-1)
+1) para saber que rama se almacenará los cambios
+git branch
 
+2) agregar un cambio
+git add .
 
-2)
+3) el commiteado
+git commit -m "mensaje"
 
+4) empujar a la rama de cambios
 
-3)
+si tienes main
+git push -u origin main
+
+si tienes master
+git push -u origin master
+
+5) verificar el estado
+
+git status
+
+6) clonar repositorio
+
+git clone git clone https://github.com/DavidR10s/golpass.git
+

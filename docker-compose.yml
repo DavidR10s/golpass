@@ -1,0 +1,36 @@
+
+services:
+  laravel-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+       - USER_ID=1000  # Asegúrate que este sea tu ID (visto con el comando 'id')
+       - GROUP_ID=1000
+    container_name: laravel-linux
+    user: 1000:1000 #lo mismo que aqui(mapea tu id de usuario de tu ordenador de esta manera)
+    ports:
+      - "8000:80" #puerto que vamos a utilizar
+    volumes:
+      -   ./laravel:/var/www/html #asegurate de cual carpeta deseas mapear al sistema del docker
+    depends_on:
+    - mysql
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_laravel
+    restart: always
+    environment:
+      MYSQL_DATABASE: golpass
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: proyect
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqlData:/var/lib/mysql
+
+volumes:
+  mysqlData:

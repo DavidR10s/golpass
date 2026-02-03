@@ -1,0 +1,21 @@
+
+--DOCKER COMPOSE
+
+1) levantar docker compose
+docker compose up -d
+
+2) cerrar docker
+docker compose down
+
+3) para el docker
+docker compose stop
+
+
+--GIT
+1)
+
+
+2)
+
+
+3)

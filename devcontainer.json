@@ -1,0 +1,28 @@
+{
+  "$schema": "https://containers.dev/schemas/devContainer.schema.json",
+  "name": "Laravel PHP 8.2 DevContainer",
+
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "laravel-app",
+  "workspaceFolder": "/var/www/html",
+
+  "shutdownAction": "stopCompose",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "onecentlin.laravel-blade"
+      ]
+    }
+  },
+
+  "settings": {
+    "php.validate.executablePath": "/usr/local/bin/php"
+  },
+
+  "postCreateCommand": "composer install",
+
+  "forwardPorts": [8000]
+}

@@ -1,6 +1,9 @@
 
 --DOCKER COMPOSE
 
+--NOTA: EN EL DOCKERFILE Y EN YML HAY COMENTARIOS
+-- ES IMPORTANTE LEERLOS.
+
 1) levantar docker compose
 docker compose up -d
 
@@ -14,6 +17,7 @@ docker compose stop
 --GIT
 1) para saber que rama se almacenará los cambios
 git branch
+
 
 2) agregar un cambio
 git add .
@@ -36,4 +40,75 @@ git status
 6) clonar repositorio
 
 git clone git clone https://github.com/DavidR10s/golpass.git
+>>>>>>> 2f9cb4a (modelos listos, faltaria controladores y panel administrativo. Aun no he migrado la base de datos)
+
+2) agregar un cambio
+git add .
+
+3) el commiteado
+git commit -m "mensaje"
+
+INSTALAR FILAMENT 
+
+1)composer require filament/filament:"^5.0"
+2)php artisan filament:install --panels
+
+3)php artisan make:filament-user   /// CREA USUARIO ADMINISTRADOR
+
+4)php artisan vendor:publish --tag=filament-config  /// CONFIGURACION DE PUBLICACION (OPCIONAL)
+
+
+4) empujar a la rama de cambios
+
+si tienes main
+git push -u origin main
+
+si tienes master
+git push -u origin master
+
+5) verificar el estado
+
+git status
+
+6) clonar repositorio
+
+git clone git clone https://github.com/DavidR10s/golpass.git
+
+--PHP ARTISAN
+
+Servidor de desarrollo
+php artisan serve: Inicia el servidor de desarrollo local en http://localhost:8000.
+php artisan serve --port=8080: Cambia el puerto por defecto.
+php artisan serve --host=0.0.0.0: Permite acceso desde otras máquinas en la red (útil con Vagrant). 
+Migraciones y base de datos
+php artisan make:migration create_users_table: Crea una nueva migración.
+php artisan migrate: Ejecuta las migraciones pendientes.
+php artisan migrate:reset: Deshace todas las migraciones.
+php artisan migrate:refresh: Vuelve a ejecutar todas las migraciones.
+php artisan migrate:fresh --seed: Elimina todas las tablas y las recrea, luego ejecuta los seeders. 
+Modelos, controladores y recursos
+php artisan make:model User: Crea un modelo.
+php artisan make:model User -mcr: Crea modelo, migración, controlador y factory.
+php artisan make:controller UserController --resource: Crea un controlador con métodos CRUD.
+php artisan make:controller UserController --api: Crea un controlador para API REST (sin métodos create y edit).
+php artisan make:controller UserController --model=User: Crea un controlador vinculado a un modelo existente. 
+Seeders y factories
+php artisan make:seeder UsersSeeder: Crea un seeder.
+php artisan db:seed: Ejecuta todos los seeders.
+php artisan db:seed --class=UsersSeeder: Ejecuta un seeder específico. 
+Caché y optimización
+php artisan config:cache: Almacena la configuración en caché (producción).
+php artisan route:cache: Almacena las rutas en caché.
+php artisan view:cache: Compila las vistas en caché.
+php artisan cache:clear: Limpia la caché de la aplicación.
+php artisan config:clear: Limpia la caché de configuración.
+php artisan route:clear: Limpia la caché de rutas.
+php artisan optimize: Optimiza la aplicación para producción. 
+Otros comandos útiles
+php artisan route:list: Muestra todas las rutas definidas.
+php artisan tinker: Abre una consola interactiva para probar código PHP.
+php artisan make:component Alert: Crea un componente Blade personalizado.
+php artisan make:request StoreUserRequest: Crea una clase de validación para requests.
+php artisan list: Muestra todos los comandos disponibles. 
+💡 Consejo: Usa php artisan help [comando] para ver detalles específicos de cualquier comando. 
 

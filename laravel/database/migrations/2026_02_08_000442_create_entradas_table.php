@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('n_asientos');
             $table->string('sector');
             $table->enum('status',['disponible','reservado','vendido']);
-            $table->decimal('precio', 8.2);
+            $table->decimal('precio', 8, 2);
             $table->timestamps();
         });
     }

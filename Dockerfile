@@ -43,14 +43,14 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 
 # Ajustar permisos de Laravel
-#RUN mkdir -p storage bootstrap/cache \
-#    && chown -R www-data:www-data storage bootstrap/cache \
-#    && chmod -R 775 storage bootstrap/cache
+RUN mkdir -p storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 # 6. Instalar Composer(si no lo tienes)
-#RUN curl -sS https://getcomposer.org/installer | php \
-#    -- --install-dir=/usr/local/bin \
-#    --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php \
+    -- --install-dir=/usr/local/bin \
+    --filename=composer
 
 #si ya lo tienes y quieres reconstruir el contenedor
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer

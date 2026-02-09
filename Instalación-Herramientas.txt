@@ -111,4 +111,3 @@ php artisan make:component Alert: Crea un componente Blade personalizado.
 php artisan make:request StoreUserRequest: Crea una clase de validación para requests.
 php artisan list: Muestra todos los comandos disponibles. 
 💡 Consejo: Usa php artisan help [comando] para ver detalles específicos de cualquier comando. 
-

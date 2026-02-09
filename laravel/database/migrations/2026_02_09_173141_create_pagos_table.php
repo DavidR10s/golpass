@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('estadios', function (Blueprint $table) {
+        Schema::create('pagos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('ciudad');
-            $table->integer('capacidad');
+            $table->string('metodo_pago', 255);
+            $table->date('fecha_pago');
+            $table->double('monto_total');
+            $table->foreignId('usuario')->constrained('users');
+            $table->foreignId('entrada')->constrained('entradas');
             $table->timestamps();
         });
     }
@@ -25,6 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('estadios');
+        Schema::dropIfExists('pagos');
     }
 };
+

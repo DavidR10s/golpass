@@ -14,12 +14,12 @@ class Equipo extends Model
         'logo_url'
     ];
 
-    public function localMatches(): HasMany
+    public function equipoLocal(): HasMany
     {
         return $this->hasMany(Partido::class, 'local_equipo_id');
     }
 
-    public function visitorMatches(): HasMany
+    public function equipoVisitante(): HasMany
     {
         return $this->hasMany(Partido::class, 'visitante_equipo_id');
     }

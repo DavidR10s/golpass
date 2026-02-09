@@ -10,19 +10,15 @@ class Entrada extends Model
     //
     protected $fillable = [
         'entrada_id',
-        'usuario_id',
         'seat_number',
         'sector',
         'estado',
         'precio'
     ];
+
     public function partido(): BelongsTo
     {
         return $this->belongsTo(Partido::class);
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

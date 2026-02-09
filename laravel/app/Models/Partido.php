@@ -13,7 +13,7 @@ class Partido extends Model
         'estadio_id',
         'local_equipo_id',
         'visitor_equipo_id',
-        'match_date',
+        'fecha',
         'finalizado'
     ];
 
@@ -29,12 +29,12 @@ class Partido extends Model
 
     public function equipoLocal(): BelongsTo
     {
-        return $this->belongsTo(Equipo::class, 'local_team_id');
+        return $this->belongsTo(Equipo::class, 'equipo_local_id');
     }
 
     public function equipoVisitante():BelongsTo
     {
-        return $this->belongsTo(Equipo::class, 'visitor_team_id');
+        return $this->belongsTo(Equipo::class, 'equipo_visitante_id');
     }
 
     public function entradas(): HasMany

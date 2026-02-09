@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('entradas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('partido_id')->constrained('partidos');
-            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->integer('n_asientos');
             $table->string('sector');
             $table->enum('status',['disponible','reservado','vendido']);

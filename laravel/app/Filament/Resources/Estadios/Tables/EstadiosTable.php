@@ -16,7 +16,7 @@ class EstadiosTable
             ->columns([
                 TextColumn::make('nombre')
                     ->searchable(),
-                TextColumn::make('cuidad')
+                TextColumn::make('ciudad')
                     ->searchable(),
                 TextColumn::make('capacidad')
                     ->numeric()

@@ -13,8 +13,8 @@ class Pago extends Model
         'metodo_pago',
         'fecha_pago',
         'monto_total',
-        'entradas',
-        'id_usuario'
+        'entrada',
+        'usuario'
     ];
 
     protected $casts =[

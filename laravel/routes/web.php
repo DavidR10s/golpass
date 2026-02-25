@@ -6,7 +6,7 @@ use App\Http\Controllers\PartidoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 //RUTA ESTADIOS

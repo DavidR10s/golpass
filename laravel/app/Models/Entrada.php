@@ -9,10 +9,11 @@ class Entrada extends Model
 {
     //
     protected $fillable = [
+        'partido_id',
         'entrada_id',
-        'seat_number',
+        'n_asientos',
         'sector',
-        'estado',
+        'status',
         'precio'
     ];
 

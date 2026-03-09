@@ -28,7 +28,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Golpass')
+            ->favicon('img/iconoProyecto.png')
+            ->brandName('Golpass | Panel Administrativo')
             ->colors([
                 'primary' => Color::Green,
             ])

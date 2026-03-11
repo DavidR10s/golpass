@@ -13,6 +13,7 @@ class PartidoController extends Controller
     public function index()
     {
         //
+        return "se debe listar partidos";
     }
 
     /**

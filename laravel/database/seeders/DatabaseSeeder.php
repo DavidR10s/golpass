@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Equipo;
+use App\Models\Partido;
+use App\Models\Entrada;
+use App\Models\Estadio;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,5 +25,22 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $estadios = Estadio::factory(5)
+        ->create();
+
+        $equipos = Equipo::factory(10)
+        ->recycle($estadios)
+        ->create();
+
+        $partidos = Partido::factory(20)
+        ->recycle($equipos)
+        ->recycle($estadios)
+        ->create();
+        
+        $entradas = Entrada::factory(100)
+        ->recycle($partidos)
+        ->create();
+
     }
 }

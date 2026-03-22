@@ -15,7 +15,7 @@
 
 <body class="bg-gray-100">
     <nav class="p-6 bg-white shadow-md flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-green-600">GOLPASS</h1>
+        <h1 class="text-2xl font-bold text-green-600"><a href="/">GOLPASS</a></h1>
         <img class="w-14" src="{{ asset('img/iconoProyecto.png')}}" alt="icono golpass">
         <div>
             <a href="/admin" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Login</a>
@@ -35,7 +35,7 @@
             @foreach(\App\Models\Partido::all() as $partido)
             <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-green-600">
                 <div class="text-sm text-gray-500 mb-2">{{ $partido->fecha }}</div>
-                <div class="flex justify-between items-center font-bold text-lg text-gray-800">
+                <div class="flex justify-between items-center text-center font-bold text-lg text-gray-800">
                     <span>{{ $partido->equipoLocal->nombre }}</span>
                     <span class="text-blue-500">VS</span>
                     <span>{{ $partido->equipoVisitante->nombre }}</span>

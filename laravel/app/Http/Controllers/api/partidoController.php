@@ -12,7 +12,11 @@ class partidoController extends Controller
     //
     public function index ()
     {
-        $partidos = Partido::with(['equipoLocal:id,nombre', 'equipoVisitante:id,nombre', 'estadio:id,nombre',])->get();
+        $partidos = Partido::with([
+            'equipoLocal:id,nombre', 
+            'equipoVisitante:id,nombre', 
+            'estadio:id,nombre',
+        ])->get();
         $data = [
                 'partidos:' => $partidos,
                 'status:' => 200
@@ -35,9 +39,30 @@ class partidoController extends Controller
 
     }
 
-    public function show ()
+    public function show ($id)
     {
+        $partido = Partido::with([
+            'equipoLocal:id,nombre', 
+            'equipoVisitante:id,nombre', 
+            'estadio:id,nombre',
+        ])->find($id);
 
+        $data = [
+            'partido' => $partido,
+            'status' => 200
+        ];
+
+        if(!$partido)
+        {
+            $data =[
+                'message' => 'partido no existe',
+                'status' => 404
+            ];
+
+            return response()->json($data, 200);
+        }
+
+        return response()->json($data, 200);
     }
 
     public function edit ()

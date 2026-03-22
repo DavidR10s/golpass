@@ -111,3 +111,51 @@ php artisan make:component Alert: Crea un componente Blade personalizado.
 php artisan make:request StoreUserRequest: Crea una clase de validación para requests.
 php artisan list: Muestra todos los comandos disponibles. 
 💡 Consejo: Usa php artisan help [comando] para ver detalles específicos de cualquier comando. 
+
+---COMANDOS LIVEWIRE
+
+-- php artisan make:livewire NombreComponente
+Crea un nuevo componente Livewire con una clase PHP y una vista Blade asociada.
+
+-- php artisan make:livewire NombreComponente --inline
+Crea un componente inline, donde la vista (Blade) se incluye directamente en el método render() del archivo PHP. 
+
+php artisan livewire:publish --assets
+Publica los assets (CSS, JS) de Livewire para que estén disponibles en tu aplicación. 
+
+php artisan livewire:publish --config
+Publica el archivo de configuración de Livewire. 
+
+php artisan livewire:stub
+Personaliza los stubs (plantillas) que se usan al crear nuevos componentes. 
+
+php artisan livewire:clear
+Limpia la caché de componentes Livewire. 
+
+----Uso de directivas en vistas Blade
+
+-- wire:model
+Sincroniza un campo de entrada con una propiedad del componente (actualiza al perder el foco o al enviar el formulario). 
+
+-- wire:model.live
+Sincroniza en tiempo real (sin necesidad de perder el foco). 
+
+-- wire:click
+Asigna una acción al hacer clic en un elemento. 
+
+-- wire:submit
+Maneja el envío de formularios.
+
+@livewireStyles y @livewireScripts
+Incluyen los estilos y scripts necesarios de Livewire en plantillas Blade. 
+
+--Ejemplo de uso
+php artisan make:livewire Tareas
+
+Este comando genera:
+
+app/Http/Livewire/Tareas.php (clase PHP)
+resources/views/livewire/tareas.blade.php (vista)
+Para usarlo en una vista:
+
+@livewire('tareas')

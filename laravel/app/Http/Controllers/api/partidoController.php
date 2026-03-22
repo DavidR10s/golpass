@@ -17,6 +17,7 @@ class partidoController extends Controller
             'equipoVisitante:id,nombre', 
             'estadio:id,nombre',
         ])->get();
+        
         $data = [
                 'partidos:' => $partidos,
                 'status:' => 200

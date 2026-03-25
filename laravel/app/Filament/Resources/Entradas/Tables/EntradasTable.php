@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Entradas\Tables;
 
+use App\Enums\StatusEntrada;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -22,7 +23,13 @@ class EntradasTable
                 TextColumn::make('sector')
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn (StatusEntrada $state): string => match ($state) 
+                    {
+                        StatusEntrada::DISPONIBLE => 'info',
+                        StatusEntrada::RESERVADO => 'gray',
+                        StatusEntrada::VENDIDO => 'success',
+                    }),
                 TextColumn::make('precio')
                     ->numeric()
                     ->prefix('€')

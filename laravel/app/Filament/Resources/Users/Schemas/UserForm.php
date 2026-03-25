@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Enums\UserRole;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -22,6 +24,10 @@ class UserForm
                 TextInput::make('password')
                     ->password()
                     ->required(),
+                Select::make('role')
+                    ->options(UserRole::class)
+                    ->required()
+                    ->native(false),
             ]);
     }
 }

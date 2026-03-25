@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PhpParser\Node\Stmt\Static_;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,6 +25,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'role' => 'client', // Por defecto, son clientes
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -39,6 +41,15 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    //25/3/2026 ---> agregamos función para generar usuario con el rol admin
+
+    public function admin(): static
+    {
+        return  $this->state(fn (array $attributes) =>[
+            'role' => 'admin',
         ]);
     }
 }

@@ -15,3 +15,4 @@ Route::get('/partidos/{id}',[partidoController::class, 'show']);
 
 Route::get('/entradas', [entradaController::class, 'index']);
 Route::get('/entradas/{id}', [entradaController::class , 'show']);
+Route::get('/partidos/{id}/entradas', [entradaController::class, 'porPartido']);   

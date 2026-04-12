@@ -6,12 +6,12 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use Filament\Models\Contracts\FilamentUser;
-use filament\Panel;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -54,9 +54,9 @@ class User extends Authenticatable
 
     /* SEGURIDAD DE FILAMENT
      */
-    public function accederPanel(Panel $panel): bool
+    public function canAccessPanel(Panel $panel): bool
     {
         // al usar casting, se compara el acceso del panel administrativo
-        return $this->role === UserRole::ADMIN;
+        return $this->role === UserRole::ADMIN;  
     }
 }

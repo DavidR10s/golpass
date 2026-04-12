@@ -19,8 +19,8 @@ class partidoController extends Controller
         ])->get();
         
         $data = [
-                'partidos:' => $partidos,
-                'status:' => 200
+                'partidos' => $partidos,
+                'status' => 200
             ];
 
         if($partidos->isEmpty())

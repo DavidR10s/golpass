@@ -68,6 +68,28 @@ class entradaController extends Controller
         return response()->json($data, 200);
     }
 
+    public function porPartido($id)
+    {
+        $entradas = Entrada::where('partido_id', $id)->get();
+        
+        $data = [
+            'data' => $entradas,
+            'status' => 200
+        ];
+
+        if(!$entradas)
+        {
+            $data =[
+                'message' => 'no hay entradas para este partido',
+                'status' => 404
+            ];
+
+            return response()->json($data, 404);
+        }
+
+        return response()->json($data);
+    }
+
     public function edit ()
     {
 

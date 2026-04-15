@@ -31,6 +31,11 @@ class Order extends Model
         'status' => StatusOrder::class,
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
     public function Entrada() : HasMany
     {
         return $this->hasMany(Entrada::class);

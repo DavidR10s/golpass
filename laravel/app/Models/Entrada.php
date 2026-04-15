@@ -24,6 +24,11 @@ class Entrada extends Model
         'precio_final' => 'decimal:2',
     ];
 
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+    
     public function partido(): BelongsTo
     {
         return $this->belongsTo(Partido::class);

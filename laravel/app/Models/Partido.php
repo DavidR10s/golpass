@@ -43,4 +43,9 @@ class Partido extends Model
     {
         return $this->hasMany(Entrada::class);
     }
+    
+    public function asientos(): HasMany
+    {
+        return $this->hasMany(Asiento::class);
+    }
 }

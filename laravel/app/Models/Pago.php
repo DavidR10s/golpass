@@ -22,12 +22,9 @@ class Pago extends Model
         'status' => StatusPago::class,
     ];
 
-    public function user(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Order::class);
     }
-    public function entrada():HasMany
-    {
-        return $this->hasMany(Entrada::class);   
-    }
+    
 }

@@ -14,16 +14,16 @@ use App\Livewire\Pages\EntradasPartidos;
     return view('home');
 });*/
 
-Route::livewire('/',Home::class);
+Route::livewire('/', Home::class);
 
 Route::livewire('comprar/{partido}', EntradasPartidos::class);
 
 //RUTA ESTADIOS
-Route::resource('estadios',EstadioController::class);
+Route::resource('estadios', EstadioController::class);
 
 //RUTA PARTIDOS
-Route::resource('partidos',PartidoController::class);
+Route::resource('partidos', PartidoController::class);
 
 //RUTA EQUIPOS
-Route::resource('equipos',EquipoController::class);
+Route::resource('equipos', EquipoController::class);
 

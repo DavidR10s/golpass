@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Enums\StatusEntrada;
+use App\Enums\StatusAsiento;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Entrada extends Model
+class Asiento extends Model
 {
-    //
+    /** @use HasFactory<\Database\Factories\AsientoFactory> */
     use HasFactory;
     protected $fillable = [
         'partido_id',
-        'asiento_id',
         'sector',
+        'fila',
+        'numero',
         'status',
-        'precio'
     ];
 
     public function partido(): BelongsTo
@@ -24,17 +24,11 @@ class Entrada extends Model
         return $this->belongsTo(Partido::class);
     }
 
-    public function Asiento(): BelongsTo
-    {
-        return $this->belongsTo(Asiento::class);
-    }
-
-    protected function casts(): array
+    public function casts(): array
     {
         return [
-            'status' => StatusEntrada::class,
+            'status' => StatusAsiento::class,
         ];
     }
-
 
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             //LOGICA: Un asiento no puede tener dos entradas para el mismo partido
-            $table->unique(['partido_id', 'seat_id']);
+            $table->unique(['partido_id', 'asiento_id']);
         });
     }
 

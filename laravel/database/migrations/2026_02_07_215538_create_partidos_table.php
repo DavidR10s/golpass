@@ -11,13 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('partidos', function (Blueprint $table) {
+        /*Schema::create('partidos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('estadio_id')->constrained('estadios');
             $table->foreignId('equipo_local_id')->constrained('equipos');
             $table->foreignId('equipo_visitante_id')->constrained('equipos');
             $table->dateTime('fecha');
             $table->boolean('finalizado');
+            $table->timestamps();
+        });*/
+        Schema::create('partidos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('estadio_id')->constrained('estadios');
+            $table->foreignId('equipo_local_id')->constrained('equipos');
+            $table->foreignId('equipo_visitante_id')->constrained('equipos');
+            $table->dateTime('fecha');
+            $table->boolean('finalizado')->default(false);
             $table->timestamps();
         });
     }

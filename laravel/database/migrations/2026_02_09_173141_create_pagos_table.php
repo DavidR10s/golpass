@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->constrained('orderss')->onDelete('cascade');
             $table->string('metodo_pago', 255);
             $table->date('fecha_pago');
-            $table->double('monto_total');
-            $table->foreignId('usuario')->constrained('users');
-            $table->foreignId('entrada')->constrained('entradas');
+            $table->string('transaccion_id')->nullable(); // ID de la pasarela
+            $table->string('status', ['exito','denegado', 'pendiente']);
+            $table->json('payload_completo')->nullable(); //Para auditoría
             $table->timestamps();
         });
     }

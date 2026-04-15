@@ -19,6 +19,10 @@ class Entrada extends Model
         'precio'
     ];
 
+    protected $casts = [
+        'status' => StatusEntrada::class,
+    ];
+
     public function partido(): BelongsTo
     {
         return $this->belongsTo(Partido::class);
@@ -28,13 +32,5 @@ class Entrada extends Model
     {
         return $this->belongsTo(Asiento::class);
     }
-
-    protected function casts(): array
-    {
-        return [
-            'status' => StatusEntrada::class,
-        ];
-    }
-
 
 }

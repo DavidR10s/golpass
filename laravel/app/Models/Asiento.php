@@ -19,16 +19,15 @@ class Asiento extends Model
         'status',
     ];
 
+    protected $casts = [
+        'status' => StatusAsiento::class,
+    ];
+
     public function partido(): BelongsTo
     {
         return $this->belongsTo(Partido::class);
     }
 
-    public function casts(): array
-    {
-        return [
-            'status' => StatusAsiento::class,
-        ];
-    }
+    
 
 }

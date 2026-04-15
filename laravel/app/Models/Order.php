@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +18,9 @@ class Order extends Model
         'monto_total',
         'status',
         //'session_id', -- PARA IMPLEMENTAR STRIPE
+    ];
+    protected $casts = [
+        'status' => StatusOrder::class,
     ];
 
     public function Entrada() : HasMany

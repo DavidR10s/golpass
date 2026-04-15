@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Entradas\Tables;
 
-use App\Enums\StatusEntrada;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,25 +14,19 @@ class EntradasTable
     {
         return $table
             ->columns([
+                TextColumn::make('order.id')
+                    ->searchable(),
+                TextColumn::make('asiento.id')
+                    ->searchable(),
                 TextColumn::make('partido.id')
                     ->searchable(),
-                TextColumn::make('n_asientos')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('sector')
-                    ->searchable(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (StatusEntrada $state): string => match ($state) 
-                    {
-                        StatusEntrada::DISPONIBLE => 'info',
-                        StatusEntrada::RESERVADO => 'gray',
-                        StatusEntrada::VENDIDO => 'success',
-                    }),
-                TextColumn::make('precio')
+                    ->badge(),
+                TextColumn::make('precio_final')
                     ->numeric()
-                    ->prefix('€')
                     ->sortable(),
+                TextColumn::make('codigo_qr')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

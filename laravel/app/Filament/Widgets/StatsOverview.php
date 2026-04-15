@@ -27,9 +27,9 @@ class StatsOverview extends StatsOverviewWidget
             ->whereBetween('created_at',[$startDate, $endDate])
             ->count();
 
-        $ingresos = Pago::query()
+        /*$ingresos = Pago::query()
             ->whereBetween('created_at',[$startDate, $endDate])
-            ->sum('monto_total');
+            ->sum('monto_total');*/
 
         $partidos = Partido::query()
             ->whereBetween('created_at',[$startDate, $endDate])
@@ -52,10 +52,10 @@ class StatsOverview extends StatsOverviewWidget
             ->descriptionIcon('heroicon-m-qr-code')
             ->color('success'),
 
-            Stat::make('ingresos Totales', '€'.number_format($ingresos, 2))
+            /*Stat::make('ingresos Totales', '€'.number_format($ingresos, 2))
             ->description('ingresos Registrados')
             ->descriptionIcon('heroicon-m-arrow-trending-up')
-            ->color('danger'),
+            ->color('danger'),*/
         ];
     }
 }

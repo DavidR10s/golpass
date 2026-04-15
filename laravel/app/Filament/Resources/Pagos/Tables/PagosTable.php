@@ -14,21 +14,17 @@ class PagosTable
     {
         return $table
             ->columns([
-                TextColumn::make('metodo_pago')
+                TextColumn::make('order.id')
                     ->searchable(),
+                TextColumn::make('metodo_pago')
+                    ->badge(),
                 TextColumn::make('fecha_pago')
                     ->date()
                     ->sortable(),
-                TextColumn::make('monto_total')
-                    ->numeric()
-                    ->prefix('€')
-                    ->sortable(),
-                TextColumn::make('usuario')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('entrada')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('transaccion_id')
+                    ->searchable(),
+                TextColumn::make('status')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

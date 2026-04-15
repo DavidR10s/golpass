@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('entradas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('partido_id')->constrained('partidos');
-            $table->integer('n_asientos');
-            $table->string('sector');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignId('asiento_id')->constrained('asientos')->onDelete('cascade');
+            $table->foreignId('partido_id')->constrained('partidos')->onDelete('cascade');
             $table->enum('status',['disponible','reservado','vendido']);
-            $table->decimal('precio', 8, 2);
+            $table->decimal('precio_final', 10, 2);
             $table->timestamps();
+
+            //LOGICA: Un asiento no puede tener dos entradas para el mismo partido
+            $table->unique(['partido_id', 'seat_id']);
         });
     }
 

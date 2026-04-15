@@ -19,10 +19,9 @@ class AsientoFactory extends Factory
     {
         return [
             //
-            'n_asientos' => $this->faker->unique()->numberBetween('1','1000'),
+            
             'sector' => $this->faker->randomElement(['Norte','Sur','Tribuna','Preferencia']),
             'status' => $this->faker->randomElement(['disponible','reservado','vendido']),
-            'precio' => $this->faker->numberBetween(10,80),
             'partido_id' => Partido::factory(),
         ];
     }

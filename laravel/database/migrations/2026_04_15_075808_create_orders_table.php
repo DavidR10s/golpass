@@ -11,8 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        /*Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });*/
+
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('numero_pedido')->unique(); // Ej: ORD-123456
+            $table->decimal('cantidad_total', 10, 2);
+            $table->enum('status', ['pending', 'paid', 'failed', 'refunded'])->default('pending');
             $table->timestamps();
         });
     }

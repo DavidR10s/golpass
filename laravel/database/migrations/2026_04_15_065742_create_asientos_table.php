@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('sector');
             $table->string('fila');
             $table->integer('numero');
-            $table->string('status')->default('available'); // available, reserved, sold
+            $table->enum('status',['disponible', 'reservado', 'vendido'])->default('disponible'); // available, reserved, sold
 
             $table->unique(['partido_id', 'sector', 'fila', 'numero']);
             $table->timestamps();

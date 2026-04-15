@@ -21,8 +21,7 @@ class OrderFactory extends Factory
             //
             'user_id' => User::factory(),
             'numero_pedido' => $this->faker->unique()->numerify('ORD-#####'),
-            'cantidad' => $this->faker->numberBetween(1, 5),
-            'total' => $this->faker->randomFloat(2, 10, 100),
+            'cantidad_total' => $this->faker->numberBetween(1, 5),
             'status' => $this->faker->randomElement(['pendiente', 'completado', 'fallido']),
 
         ];

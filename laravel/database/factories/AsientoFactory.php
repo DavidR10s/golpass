@@ -26,7 +26,7 @@ class AsientoFactory extends Factory
         ];*/
         return [
             'fila' => $this->faker->bothify('Fila ##'),
-            'numero' => $this->faker->unique()->numberBetween(1, 1000),
+            'numero' => $this->faker->numberBetween(1, 1000),
             'sector' => $this->faker->randomElement(['Norte','Sur','Tribuna','Preferencia']),
             'status' => $this->faker->randomElement(['disponible','reservado','vendido']),
             'partido_id' => Partido::factory(),

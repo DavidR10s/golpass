@@ -5,7 +5,7 @@ enum StatusAsiento: string
 {
     case DISPONIBLE = 'disponible';
     case RESERVADO = 'reservado';
-    case DISPONIBLE = 'vendido';
+    case VENDIDO = 'vendido';
 }
 
 ?>

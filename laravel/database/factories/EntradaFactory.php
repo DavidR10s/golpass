@@ -22,8 +22,9 @@ class EntradaFactory extends Factory
     {
         return [
             //
-            'status' => $this->faker->randomElement(['disponible','reservado','vendido']),
+            'status' => $this->faker->randomElement(['cancelado','reservado','vendido']),
             'precio_final' => $this->faker->numberBetween(10,80),
+            'codigo_qr' => $this->faker->uuid(),
             'order_id' => Order::factory(),
             'asiento_id' => Asiento::factory(),
             'partido_id' => Partido::factory(),

@@ -13,6 +13,7 @@ use App\Models\Pago;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str as Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,12 +24,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        $usuarios = User::factory(10)->create();
 
         User::factory()->admin()->create([
             'name' => 'admin',
             'email' => 'admin@golpass.com',
             'password' => Hash::make('123'),
+            'role' => 'admin',
         ]);
 
         $estadios = Estadio::factory(5)
@@ -51,7 +53,7 @@ class DatabaseSeeder extends Seeder
 
         // 6. Órdenes y Entradas (El flujo de venta final)
         // Aquí simulamos ventas reales para tener datos en el sistema
-        Order::factory(20)->create()->each(function ($order) use ($partidos) {
+        Order::factory(20)->recycle($usuarios)->create()->each(function ($order) use ($partidos) {
             // Seleccionamos un partido al azar
             $partido = $partidos->random();
             
@@ -63,10 +65,11 @@ class DatabaseSeeder extends Seeder
             if ($asiento) {
                 // Creamos la Entrada (Ticket) vinculada a la orden y al asiento
                 Entrada::factory()->create([
-                    'order_id'   => $order->id,
-                    'seat_id'    => $asiento->id,
-                    'partido_id' => $partido->id,
-                    'precio_final' => $partido->precio_base, // Precio del ticket = precio del partido
+                    'order_id'      => $order->id,
+                    'asiento_id'    => $asiento->id,
+                    'partido_id'    => $partido->id,
+                    'precio_final'  => $partido->precio_base, // Precio del ticket = precio del partido
+                    'codigo_qr'     => Str::uuid(), // Generamos un código QR único para la entrada
                 ]);
 
                 // Actualizamos el estado del asiento a 'vendido'
@@ -80,10 +83,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
         });
-        
-        $entradas = Entrada::factory(100)
-        ->recycle($partidos)
-        ->create();
 
     }
 }

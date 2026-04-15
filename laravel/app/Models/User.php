@@ -44,7 +44,7 @@ class User extends Authenticatable implements FilamentUser
      *
      * @return array<string, string>
      */
-    protected $asts = [
+    protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'role' => UserRole::class,

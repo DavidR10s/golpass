@@ -23,7 +23,7 @@ class Order extends Model
         'user_id',
         'asiento_id',
         'numero_pedido',
-        'cantidad',
+        'cantidad_total',
         'status',
     ];
 

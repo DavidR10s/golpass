@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('estadio_id')->constrained('estadios');
             $table->foreignId('equipo_local_id')->constrained('equipos');
             $table->foreignId('equipo_visitante_id')->constrained('equipos');
+            $table->decimal('precio_base', 8, 2); // Nuevo campo para el precio base del partido
             $table->dateTime('fecha');
             $table->boolean('finalizado')->default(false);
             $table->timestamps();

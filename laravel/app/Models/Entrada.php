@@ -17,6 +17,7 @@ class Entrada extends Model
         'asiento_id',
         'status',
         'precio_final',
+        'codigo_qr',
     ];
 
     protected $casts = [

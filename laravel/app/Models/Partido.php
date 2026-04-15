@@ -15,6 +15,7 @@ class Partido extends Model
         'estadio_id',
         'equipo_local_id',
         'equipo_visitante_id',
+        'precio_base',
         'fecha',
         'finalizado'
     ];

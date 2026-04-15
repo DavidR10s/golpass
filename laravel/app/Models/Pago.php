@@ -20,6 +20,7 @@ class Pago extends Model
 
     protected $casts = [
         'status' => StatusPago::class,
+        'payload_completo' => 'array',
     ];
 
     public function order(): BelongsTo

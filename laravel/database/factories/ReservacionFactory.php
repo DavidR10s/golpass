@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Asiento;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +20,10 @@ class ReservacionFactory extends Factory
     {
         return [
             //
+            'user_id' => User::factory(),
+            'asiento_id' => Asiento::factory(),
+            'expira_en' => now()->addMinutes(15),
+            'status' => $this->faker->randomElement(['activa', 'expirada', 'cancelada'])
         ];
     }
 }

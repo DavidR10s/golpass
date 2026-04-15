@@ -50,6 +50,16 @@ class User extends Authenticatable implements FilamentUser
         'role' => UserRole::class,
     ];
 
+    public function Order(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function Reservacion(): HasMany
+    {
+        return $this->hasMany(Reservacion::class);
+    }
+
     /* SEGURIDAD DE FILAMENT
      */
     public function canAccessPanel(Panel $panel): bool
@@ -58,8 +68,4 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === UserRole::ADMIN;  
     }
 
-    public function Order(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
 }

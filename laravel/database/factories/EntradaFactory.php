@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Asiento;
+use App\Models\Order;
 use App\Models\Partido;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
@@ -20,10 +22,10 @@ class EntradaFactory extends Factory
     {
         return [
             //
-            'n_asientos' => $this->faker->unique()->numberBetween('1','1000'),
-            'sector' => $this->faker->randomElement(['Norte','Sur','Tribuna','Preferencia']),
             'status' => $this->faker->randomElement(['disponible','reservado','vendido']),
-            'precio' => $this->faker->numberBetween(10,80),
+            'precio_final' => $this->faker->numberBetween(10,80),
+            'order_id' => Order::factory(),
+            'asiento_id' => Asiento::factory(),
             'partido_id' => Partido::factory(),
         ];
     }

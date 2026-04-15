@@ -12,15 +12,16 @@ class Entrada extends Model
     //
     use HasFactory;
     protected $fillable = [
+        'order_id',
         'partido_id',
         'asiento_id',
-        'sector',
         'status',
-        'precio'
+        'precio_final',
     ];
 
     protected $casts = [
         'status' => StatusEntrada::class,
+        'precio_final' => 'decimal:2',
     ];
 
     public function partido(): BelongsTo

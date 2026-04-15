@@ -17,9 +17,16 @@ class AsientoFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        /*return [
             //
             
+            'sector' => $this->faker->randomElement(['Norte','Sur','Tribuna','Preferencia']),
+            'status' => $this->faker->randomElement(['disponible','reservado','vendido']),
+            'partido_id' => Partido::factory(),
+        ];*/
+        return [
+            'fila' => $this->faker->bothify('Fila ##'),
+            'numero' => $this->faker->unique()->numberBetween(1, 1000),
             'sector' => $this->faker->randomElement(['Norte','Sur','Tribuna','Preferencia']),
             'status' => $this->faker->randomElement(['disponible','reservado','vendido']),
             'partido_id' => Partido::factory(),

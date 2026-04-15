@@ -12,13 +12,21 @@ class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
-    protected $fillable = [
+    /*protected $fillable = [
         'partido_id',
         'user_id',
         'monto_total',
         'status',
         //'session_id', -- PARA IMPLEMENTAR STRIPE
+    ];*/
+    protected $fillable = [
+        'user_id',
+        'asiento_id',
+        'numero_pedido',
+        'cantidad',
+        'status',
     ];
+
     protected $casts = [
         'status' => StatusOrder::class,
     ];

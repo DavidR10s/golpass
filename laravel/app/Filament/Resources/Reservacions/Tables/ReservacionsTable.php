@@ -24,7 +24,12 @@ class ReservacionsTable
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state) => match ($state->value ?? $state) {
+                        'expirada' => 'warning',
+                        'activa' => 'success',
+                        'cancelada' => 'danger',
+                    }),
             ])
             ->filters([
                 //

@@ -21,7 +21,12 @@ class EntradasTable
                 TextColumn::make('partido.id')
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state) => match ($state->value ?? $state) {
+                        'vendido' => 'success',
+                        'cancelado' => 'danger',
+                        'reservado' => 'warning',
+                    }),
                 TextColumn::make('precio_final')
                     ->numeric()
                     ->sortable(),

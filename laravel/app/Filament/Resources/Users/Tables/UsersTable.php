@@ -15,7 +15,11 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('role')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state): string => match ($state->value ?? $state) {
+                        'admin' => 'danger',
+                        'client' => 'success',
+                    }),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')

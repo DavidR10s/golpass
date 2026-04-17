@@ -24,7 +24,12 @@ class AsientosTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn($state) => match ($state->value ?? $state) {
+                        'disponible' => 'success',
+                        'reservado' => 'warning',
+                        'vendido' => 'danger',
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

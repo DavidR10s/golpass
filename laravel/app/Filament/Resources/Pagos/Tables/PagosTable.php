@@ -24,7 +24,12 @@ class PagosTable
                 TextColumn::make('transaccion_id')
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state) => match ($state->value ?? $state) {
+                        'exito' => 'success',
+                        'denegado' => 'danger',
+                        'pendiente' => 'warning',
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

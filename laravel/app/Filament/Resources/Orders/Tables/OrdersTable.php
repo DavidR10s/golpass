@@ -23,7 +23,12 @@ class OrdersTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state) => match ($state->value ?? $state) {
+                        'pendiente' => 'warning',
+                        'completado' => 'success',
+                        'fallido' => 'danger',
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

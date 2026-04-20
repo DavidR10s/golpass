@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Home;
 
 use App\Livewire\Pages\EntradasPartidos;
+use App\Livewire\Pages\AsientoSector;
 
 
 /*Route::get('/', function () {
@@ -16,7 +17,7 @@ use App\Livewire\Pages\EntradasPartidos;
 
 Route::livewire('/', Home::class);
 
-Route::livewire('comprar/{partido}', EntradasPartidos::class);
+Route::livewire('comprar/{partido}', AsientoSector::class);
 
 //RUTA ESTADIOS
 Route::resource('estadios', EstadioController::class);

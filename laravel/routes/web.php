@@ -19,6 +19,8 @@ Route::livewire('/', Home::class);
 
 Route::livewire('comprar/{partido}', AsientoSector::class);
 
+Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
+
 //RUTA ESTADIOS
 Route::resource('estadios', EstadioController::class);
 

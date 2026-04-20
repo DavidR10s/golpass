@@ -6,12 +6,13 @@
 
     </div>
     <div class="grid grid-cols-10 gap-2 mb-8">
-        @foreach(range(1, 50) as $i)
-        <button 
-        wire:click= "seleccionAsiento({{$i}})"
-        class="h-10 w-10 rounded-t-lg border-2 {{ in_array($i, $this->asientosSeleccionados) ? 'bg-green-500 border-green-700' : 'bg-blue-400 border-blue-600'}} hover:bg-green-300 transition-colors">
+        @foreach($asientos as $asiento)
 
-        </button>
+                <button 
+                wire:click= "seleccionAsiento({{$asiento->id}})"
+                class="h-10 w-10 rounded-t-lg border-2 {{ in_array($asiento->id, $this->asientosSeleccionados) ? 'bg-green-500 border-green-700' : 'bg-blue-400 border-blue-600'}} hover:bg-green-300 transition-colors">
+
+                </button>
         @endforeach
     </div>
 

@@ -7,7 +7,7 @@
         </div>
 
         <div>
-            <p class="text-gray-600 m-8">
+            <p class="text-gray-600 m-8 font-bold">
                 {{ $partido->estadio->nombre }} - {{ $partido->estadio->ciudad }}
             </p>
         </div>
@@ -24,7 +24,7 @@
         </a>
 
         <div class="grid grid-cols-3 gap-4">
-            <a href="{{ route('entradas-partidos', [$partido->id, 'Polo Norte']) }}"
+            <a href="{{ route('entradas-partidos', [$partido->id, 'Norte']) }}"
                 wire:navigate
                 class="flex items-center justify-center bg-gray-400 rounded-xl h-32 hover:bg-gray-600 text-white transition">
                 Norte - {{ $partido->asientos->where('sector', 'Norte')->where('status', 'disponible')->count() }} asientos disponibles
@@ -34,7 +34,7 @@
                 Cancha
             </div>
 
-            <a href="{{ route('entradas-partidos', [$partido->id, 'Polo Sur']) }}"
+            <a href="{{ route('entradas-partidos', [$partido->id, 'Sur']) }}"
                 wire:navigate
                 class="flex items-center justify-center bg-gray-400 rounded-xl h-32 hover:bg-gray-600 text-white transition">
                 Sur - {{ $partido->asientos->where('sector', 'Sur')->where('status', 'disponible')->count() }} asientos disponibles

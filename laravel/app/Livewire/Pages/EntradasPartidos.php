@@ -14,29 +14,30 @@ class EntradasPartidos extends Component
 
     public function mount(Partido $partido, $sectorSeleccionado)
     {
-        $this->partido = $partido->load(['equipoLocal', 'equipoVisitante', 'estadio']);
+        $this->partido = $partido->load(['equipoLocal', 'equipoVisitante', 'estadio', 'asientos']);
         $this->sectorSeleccionado = $sectorSeleccionado;
     }
 
-    public function seleccionAsiento($asientoId){
+    public function seleccionarAsiento($asientoId){
         if(in_array($asientoId, $this->asientosSeleccionados)){
             $this->asientosSeleccionados = array_diff($this->asientosSeleccionados, [$asientoId]);
         }else{
             $this->asientosSeleccionados[] = $asientoId;
         }
     }
+    
 
     public function render()
     {
-        $query = $this->partido->asientos();
+        
 
         // Si viene un sector por la ruta, filtramos
-        if ($this->sectorSeleccionado) {
-            $query->where('sector', $this->sectorSeleccionado);
-        }
+        $asientosFiltrados = $this->partido->asientos()
+        ->where('sector', $this->sectorSeleccionado)
+        ->get();
 
         return view('livewire.pages.entradas-partidos', [
-            'asientos' => $query->get()
+            'asientos' => $asientosFiltrados
         ]);
 
         /*return view('livewire.pages.entradas-partidos',[

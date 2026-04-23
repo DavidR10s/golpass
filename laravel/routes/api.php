@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\partidoController;
 use App\Http\Controllers\api\entradaController;
+use App\Http\Controllers\api\equipoController;
 
 
 Route::get('/user', function (Request $request) {
@@ -12,6 +13,9 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/partidos', [partidoController::class, 'index']);
 Route::get('/partidos/{id}',[partidoController::class, 'show']);
+
+Route::get('/equipos', [equipoController::class, 'index']);
+Route::get('/equipos/{id}', [equipoController::class, 'show']);
 
 Route::get('/entradas', [entradaController::class, 'index']);
 Route::get('/entradas/{id}', [entradaController::class , 'show']);

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Livewire\Pages;
-
 use Livewire\Component;
 
 class Home extends Component
@@ -11,3 +9,5 @@ class Home extends Component
         return view('livewire.pages.home');
     }
 }
+
+?>

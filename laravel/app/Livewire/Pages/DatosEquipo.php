@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use App\Models\Equipo;
+use App\Models\Partido;
 use Livewire\Component;
 
 class DatosEquipo extends Component
@@ -14,7 +15,8 @@ class DatosEquipo extends Component
     {
         //$this->equipo = Equipo::findOrFail($equipo);
 
-        $this->partidos = \App\Models\Partido::where(function ($query) use ($equipo) {
+        $this->partidos = Partido::with(['equipoLocal', 'equipoVisitante'])
+                ->where(function ($query) use ($equipo) {
                 $query->where('equipo_local_id', $equipo->id)
                       ->orWhere('equipo_visitante_id', $equipo->id);
             })

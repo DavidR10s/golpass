@@ -10,6 +10,7 @@ use App\Livewire\Pages\Home;
 use App\Livewire\Pages\EntradasPartidos;
 use App\Livewire\Pages\AsientoSector;
 use App\Livewire\Pages\DatosEquipo;
+use App\Http\Controllers\AuthController;
 
 /*Route::get('/', function () {
     return view('home');
@@ -22,6 +23,13 @@ Route::livewire('comprar/{partido}', AsientoSector::class);
 Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
 
 Route::livewire('equipo/{equipo}', DatosEquipo::class);
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/registro', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/registro', [AuthController::class, 'register']);
+});
 
 //RUTA ESTADIOS
 Route::resource('estadios', EstadioController::class);

@@ -31,6 +31,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/registro', [AuthController::class, 'register']);
 });
 
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
 //RUTA ESTADIOS
 Route::resource('estadios', EstadioController::class);
 

@@ -35,7 +35,7 @@ class AuthController extends Controller
     // Lógica de Login
     public function login(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         $credentials = $request->validate([
             'name' => ['required'],
             'email' => ['required', 'email'],

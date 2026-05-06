@@ -18,10 +18,6 @@ use App\Http\Controllers\AuthController;
 
 Route::livewire('/', Home::class);
 
-Route::livewire('comprar/{partido}', AsientoSector::class);
-
-Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
-
 Route::livewire('equipo/{equipo}', DatosEquipo::class);
 
 Route::middleware('guest')->group(function () {
@@ -33,6 +29,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::livewire('comprar/{partido}', AsientoSector::class);
+    Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
 });
 
 //RUTA ESTADIOS

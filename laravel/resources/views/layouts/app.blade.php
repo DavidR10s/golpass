@@ -23,7 +23,7 @@
             <p>Bienvenido, {{ auth()->user()->name }}</p>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit">Cerrar Sesión</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="submit">Cerrar Sesión</button>
             </form>
         @endauth
         @guest

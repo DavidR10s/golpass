@@ -25,4 +25,8 @@ class Equipo extends Model
     {
         return $this->hasMany(Partido::class, 'visitante_equipo_id');
     }
+    public function partidos()
+    {
+        return $this->hasMany(Partido::class);
+    }
 }

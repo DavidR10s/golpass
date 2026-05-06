@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Fonts -->
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <!-- Tailwind -->
@@ -20,11 +21,14 @@
         <h1 class="text-2xl font-bold text-green-600"><a href="/">GOLPASS</a></h1>
         <img class="w-14" src="{{ asset('img/iconoProyecto.png') }}" alt="icono golpass">
         @auth
+        <div class="justify-between items-center flex gap-4">
             <p>Bienvenido, {{ auth()->user()->name }}</p>
+            <a href=""><span class="material-symbols-outlined">shopping_cart</span><b class="text-red-500">0</b></a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="submit">Cerrar Sesión</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer" type="submit">Cerrar Sesión</button>
             </form>
+        </div>
         @endauth
         @guest
             <div>

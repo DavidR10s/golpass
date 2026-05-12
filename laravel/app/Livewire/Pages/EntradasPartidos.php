@@ -58,7 +58,7 @@ class EntradasPartidos extends Component
                     ]);
 
                     // 3. Opcional: Actualizar el estado del asiento físico si tienes esa columna
-                    // \App\Models\Asiento::where('id', $asientoId)->update(['status' => 'reservado']);
+                     \App\Models\Asiento::where('id', $asientoId)->update(['status' => 'reservado']);
                 }
 
                 return $newOrder;
@@ -92,8 +92,5 @@ class EntradasPartidos extends Component
             'asientos' => $asientosFiltrados
         ]);
 
-        /*return view('livewire.pages.entradas-partidos',[
-            'asientos' => $this->partido->asientos()->where('sector_id', $this->sectorSeleccionado)->get()
-        ]);*/
     }
 }

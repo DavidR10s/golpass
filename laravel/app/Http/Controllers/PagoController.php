@@ -9,6 +9,7 @@ use App\Models\Partido;
 use App\Models\Asiento;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Log;
+use App\Models\Order;
 
 class PagoController extends Controller
 {
@@ -35,16 +36,21 @@ class PagoController extends Controller
     {
         // 1. Validación de entrada
         $request->validate([
-            'asientos' => 'required|array',
-            'partido_id' => 'required|exists:partidos,id',
+        'order_id' => 'required|exists:orders,id',
         ]);
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $order = \App\Models\Order::with('entradas.asiento', 'entradas.partido')->findOrFail($request->order_id);
 
-        $partido = Partido::with(['equipoLocal', 'equipoVisitante'])->findOrFail($request->partido_id);
+            $partido = Partido::with(['equipoLocal', 'equipoVisitante'])->findOrFail($request->partido_id);
         $asientosIds = $request->asientos;
 
         // 2. Verificación de seguridad: ¿Siguen los asientos disponibles?
+        foreach ($order->entradas as $entrada) {
+        if ($entrada->asiento->status !== 'disponible') { 
+            // Ojo: si ya los marcaste como 'reservado' al crear la orden, 
+            // asegúrate de que esta lógica coincida.
+        }
+    }
         $asientosDisponibles = Asiento::whereIn('id', $asientosIds)
             ->where('status', 'disponible')
             ->count();
@@ -53,11 +59,13 @@ class PagoController extends Controller
             return back()->with('error', 'Uno o más asientos ya no están disponibles.');
         }
 
+        Stripe::setApiKey(config('services.stripe.secret'));
+
         // 3. Crear la sesión de Stripe Checkout
         try {
             $montoTotal = count($asientosIds) * $partido->precio_base;
 
-            $session = Session::create([
+            /*$session = Session::create([
                 'payment_method_types' => ['card'],
                 'line_items' => [[
                     'price_data' => [
@@ -75,6 +83,32 @@ class PagoController extends Controller
                 'success_url' => route('pago.exito') . '?session_id={CHECKOUT_SESSION_ID}&asientos=' . implode(',', $asientosIds),
                 'cancel_url' => route('pago.cancelado'),
                // 'customer_email' => auth()->user()->email,
+            ]);*/
+
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => 
+                [[
+                    'price_data' => 
+                    [
+                        'currency' => 'eur',
+                        'product_data' => 
+                        [
+                            'name' => "Reserva #{$order->numero_pedido}",
+                            'description' => "Pago de entradas para el partido.",
+                        ],
+                        'unit_amount' => $order->total_amount * 100, 
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                // LIMPIEZA: Solo pasamos el session_id, el resto va por Metadata
+                'success_url' => route('pago.exito') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('pago.cancelado'),
+                'metadata' => 
+                [
+                    'order_id' => $order->id, // <--- ESTO ES LO SEGURO
+                ],
             ]);
 
             return redirect($session->url);

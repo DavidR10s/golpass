@@ -80,7 +80,11 @@
         </div>
         <button wire:loading.attr="disabled" wire:click="confirmarReserva" class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold {{empty($asientosSeleccionados) ? 'opacity-50 cursor-not-allowed' : '' }}">
             Confimar Reserva
+            
         </button>
-        <span wire:loading>Procesando...</span>
+        <span wire:loading>
+            
+            Procesando...
+        </span>
     </div>
 </div>

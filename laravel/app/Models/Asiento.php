@@ -38,6 +38,20 @@ class Asiento extends Model
         return $this->hasOne(Entrada::class);
     }
 
-    
+    public function getStatusColor($seleccionados = [])
+    {
+        if (in_array($this->id, $seleccionados)) 
+        {
+            return 'bg-indigo-600 ring-4 ring-indigo-300';
+        }
+
+        return match($this->status) 
+        {
+            'vendido'   => 'bg-amber-600 cursor-not-allowed',
+            'reservado' => 'bg-gray-600',
+            'disponible' => 'bg-green-500 hover:bg-green-600',
+            default      => 'bg-gray-400',
+        };
+    }
 
 }

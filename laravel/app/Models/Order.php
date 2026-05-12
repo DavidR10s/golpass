@@ -36,7 +36,7 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function Entrada() : HasMany
+    public function Entradas() : HasMany
     {
         return $this->hasMany(Entrada::class);
     }

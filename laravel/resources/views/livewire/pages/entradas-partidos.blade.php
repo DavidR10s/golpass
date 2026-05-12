@@ -1,4 +1,4 @@
-<div class="p-6 max-w-4xl mx-auto">
+<div class="p-6 max-w-4xl mx-auto" wire:poll.10s>
     <div id="componente" class="bg-green-50 shadow-md p-4 rounded-2xl text-center">
         <div id="component-partido" class="flex justify-evenly font-bold text-xl">
             <div><p>{{ $partido->equipoLocal->nombre }}</p></div>
@@ -19,6 +19,7 @@
             </h2>
             
     </div>
+    
     <div class="grid grid-cols-10 gap-2 mb-8">
         @foreach($asientos as $asiento)
             @php
@@ -77,8 +78,9 @@
                 {{count($asientosSeleccionados)}}    
             </span>
         </div>
-        <button class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold {{empty($asientosSeleccionados) ? 'opacity-50 cursor-not-allowed' : '' }}">
+        <button wire:loading.attr="disabled" wire:click="confirmarReserva" class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold {{empty($asientosSeleccionados) ? 'opacity-50 cursor-not-allowed' : '' }}">
             Confimar Reserva
         </button>
+        <span wire:loading>Procesando...</span>
     </div>
 </div>

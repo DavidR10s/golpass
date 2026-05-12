@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::livewire('comprar/{partido}', AsientoSector::class);
     Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
+
+    Route::livewire('cart', \App\Livewire\UserCart::class)->name('user-cart');
 });
 
 //RUTA ESTADIOS

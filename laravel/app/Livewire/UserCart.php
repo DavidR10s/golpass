@@ -8,19 +8,42 @@ use App\Models\Order;
 use App\Models\Partido;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+
 
 class UserCart extends Component
 {
 
     public function eliminarOrden($orderId)
     {
-        $order = Order::where('id', $orderId)->where('user_id', Auth::id())->first();
-        
+        $order = Order::with('entradas.asiento')
+            ->where('id', $orderId)
+            ->where('user_id', Auth::id())
+            ->first();
+
         if ($order) {
-            // Al eliminar la orden, las entradas se eliminan en cascada si así está en tu DB
-            // o puedes eliminarlas manualmente: $order->entradas()->delete();
-            $order->delete();
-            $this->dispatch('alert', 'Reserva cancelada correctamente.');
+            try {
+                DB::transaction(function () use ($order) {
+                    // 2. Recorremos las entradas para liberar los asientos físicos
+                    foreach ($order->entradas as $entrada) {
+                        if ($entrada->asiento) {
+                            $entrada->asiento->update([
+                                'status' => 'disponible' // Volvemos el asiento a su estado original
+                            ]);
+                        }
+                    }
+
+                    // 3. Borramos las entradas relacionadas
+                    $order->entradas()->delete();
+
+                    // 4. Finalmente borramos la orden
+                    $order->delete();
+                });
+
+                $this->dispatch('alert', 'Reserva cancelada y asientos liberados.');
+            } catch (\Exception $e) {
+                $this->dispatch('alert', 'Error al cancelar la reserva.');
+            }
         }
     }
 
@@ -42,6 +65,5 @@ class UserCart extends Component
         return view('livewire.user-cart', [
             'orders' => $orders,
         ]);
-
     }
 }

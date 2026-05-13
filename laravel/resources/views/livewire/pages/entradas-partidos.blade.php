@@ -1,9 +1,15 @@
 <div class="p-6 max-w-4xl mx-auto" wire:poll.10s>
     <div id="componente" class="bg-green-50 shadow-md p-4 rounded-2xl text-center">
         <div id="component-partido" class="flex justify-evenly font-bold text-xl">
-            <div><p>{{ $partido->equipoLocal->nombre }}</p></div>
-            <div><p>VS</p></div>
-            <div><p>{{ $partido->equipoVisitante->nombre }}</p></div>
+            <div>
+                <p>{{ $partido->equipoLocal->nombre }}</p>
+            </div>
+            <div>
+                <p>VS</p>
+            </div>
+            <div>
+                <p>{{ $partido->equipoVisitante->nombre }}</p>
+            </div>
         </div>
 
         <div>
@@ -14,58 +20,57 @@
     </div>
     <br>
     <div class="bg-gray-200 p-8 rounded-t-3xl border-b-8 border-gray-400 mb-8 text-center font-bold text-gray-500">
-            <h2 class="text-2xl font-bold mb-4 text-center">
-                {{$partido->asientos->where('sector', $sectorSeleccionado)->where('status', 'disponible')->count()}} asientos disponibles en {{$sectorSeleccionado}}
-            </h2>
-            
+        <h2 class="text-2xl font-bold mb-4 text-center">
+            {{$partido->asientos->where('sector', $sectorSeleccionado)->where('status', 'disponible')->count()}} asientos disponibles en {{$sectorSeleccionado}}
+        </h2>
+
     </div>
-    
+
     <div class="grid grid-cols-10 gap-2 mb-8">
         @foreach($asientos as $asiento)
-            @php
+        @php
 
-                // 1. declaramos variable para los asientos seleccionados
+        // 1. declaramos variable para los asientos seleccionados
 
-                $estaSeleccionado = in_array($asiento->id, $asientosSeleccionados);
+        $estaSeleccionado = in_array($asiento->id, $asientosSeleccionados);
 
-                // 2. declaramos variable para almacenar el status de cada asiento
+        // 2. declaramos variable para almacenar el status de cada asiento
 
-                $statusValue = $asiento->status->value ?? $asiento->status;
+        $statusValue = $asiento->status->value ?? $asiento->status;
 
-                $colorBase = match($asiento->status->value ?? $asiento->status) {
-                    'reservado' => 'bg-gray-600 ',
-                    'vendido'   => 'bg-amber-600 cursor-not-allowed', // Un ámbar más oscuro
-                    'disponible' => 'bg-green-500 ',
-                    default      => 'bg-gray-400',
-                };
+        $colorBase = match($asiento->status->value ?? $asiento->status) {
+        'reservado' => 'bg-gray-600 ',
+        'vendido' => 'bg-amber-600 cursor-not-allowed', // Un ámbar más oscuro
+        'disponible' => 'bg-green-500 ',
+        default => 'bg-gray-400',
+        };
 
-                // 3. Lógica de color final: Si está seleccionado, anulamos el color base
+        // 3. Lógica de color final: Si está seleccionado, anulamos el color base
 
-                if ($estaSeleccionado && $statusValue === 'disponible') {
-                    $colorFinal = 'bg-indigo-600 hover:bg-indigo-700 ring-4 ring-indigo-300'; 
-                } elseif ($statusValue === 'disponible') {
-                    $colorFinal = $colorBase . ' hover:bg-green-600'; // Añadimos hover solo si está disponible
-                } else {
-                    $colorFinal = $colorBase; // Para reservados y vendidos, mantenemos su color sin hover
-                }
+        if ($estaSeleccionado && $statusValue === 'disponible') {
+        $colorFinal = 'bg-indigo-600 hover:bg-indigo-700 ring-4 ring-indigo-300';
+        } elseif ($statusValue === 'disponible') {
+        $colorFinal = $colorBase . ' hover:bg-green-600'; // Añadimos hover solo si está disponible
+        } else {
+        $colorFinal = $colorBase; // Para reservados y vendidos, mantenemos su color sin hover
+        }
 
-                // Si está vendido, queremos que el botón esté desactivado
+        // Si está vendido, queremos que el botón esté desactivado
 
-                $disabled = ($asiento->status->value ?? $asiento->status) === 'vendido';
-            @endphp
+        $disabled = ($asiento->status->value ?? $asiento->status) === 'vendido';
+        @endphp
 
-                <button 
-                    wire:key="asiento-{{ $asiento->id }}"
-                    @if($disabled) 
-                        disabled 
-                    @else 
-                        wire:click="seleccionarAsiento({{ $asiento->id }})" 
-                    @endif
-                    class="{{ $colorFinal }} w-10 h-10 rounded-lg text-white font-bold flex items-center justify-center transition-colors shadow-sm"
-                    title="Asiento {{ $asiento->numero }} - {{ ucfirst($asiento->status->value ?? $asiento->status) }}"
-                >
-                    {{ $asiento->numero }}
-                </button>
+        <button
+            wire:key="asiento-{{ $asiento->id }}"
+            @if($disabled)
+            disabled
+            @else
+            wire:click="seleccionarAsiento({{ $asiento->id }})"
+            @endif
+            class="{{ $colorFinal }} w-10 h-10 rounded-lg text-white font-bold flex items-center justify-center transition-colors shadow-sm"
+            title="Asiento {{ $asiento->numero }} - {{ ucfirst($asiento->status->value ?? $asiento->status) }}">
+            {{ $asiento->numero }}
+        </button>
         @endforeach
     </div>
 
@@ -75,16 +80,26 @@
                 asientosSeleccionados:
             </p>
             <span class="font-bold">
-                {{count($asientosSeleccionados)}}    
+                {{count($asientosSeleccionados)}}
             </span>
         </div>
-        <button wire:loading.attr="disabled" wire:click="confirmarReserva" class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold {{empty($asientosSeleccionados) ? 'opacity-50 cursor-not-allowed' : '' }}">
-            Confimar Reserva
-            
+        <button
+            wire:loading.attr="disabled"
+            wire:click="confirmarReserva"
+            wire:target="confirmarReserva"
+            class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold {{empty($asientosSeleccionados) ? 'opacity-50 cursor-not-allowed' : '' }}">
+
+            <svg wire:loading wire:target="confirmarReserva" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span wire:loading.remove wire:target="confirmarReserva">
+                Confirmar Reserva
+            </span>
+
+            <span wire:loading wire:target="confirmarReserva">
+                Procesando...
+            </span>
         </button>
-        <span wire:loading>
-            
-            Procesando...
-        </span>
     </div>
 </div>

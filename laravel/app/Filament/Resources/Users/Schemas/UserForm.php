@@ -14,6 +14,10 @@ class UserForm
     {
         return $schema
             ->components([
+                Select::make('role')
+                    ->options(UserRole::class)
+                    ->default('client')
+                    ->required(),
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('email')
@@ -24,10 +28,6 @@ class UserForm
                 TextInput::make('password')
                     ->password()
                     ->required(),
-                Select::make('role')
-                    ->options(UserRole::class)
-                    ->required()
-                    ->native(false),
             ]);
     }
 }

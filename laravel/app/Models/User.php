@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -43,13 +44,20 @@ class User extends Authenticatable implements FilamentUser
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'role' => UserRole::class,
+    ];
+
+    public function Order(): HasMany
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'role' => UserRole::class,
-        ];
+        return $this->hasMany(Order::class);
+    }
+
+    public function Reservacion(): HasMany
+    {
+        return $this->hasMany(Reservacion::class);
     }
 
     /* SEGURIDAD DE FILAMENT
@@ -59,4 +67,5 @@ class User extends Authenticatable implements FilamentUser
         // al usar casting, se compara el acceso del panel administrativo
         return $this->role === UserRole::ADMIN;  
     }
+
 }

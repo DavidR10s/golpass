@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Entradas\Schemas;
 
+use App\Enums\StatusEntrada;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -12,21 +13,23 @@ class EntradaForm
     {
         return $schema
             ->components([
+                Select::make('order_id')
+                    ->relationship('order', 'id')
+                    ->required(),
+                Select::make('asiento_id')
+                    ->relationship('asiento', 'id')
+                    ->required(),
                 Select::make('partido_id')
                     ->relationship('partido', 'id')
                     ->required(),
-                TextInput::make('n_asientos')
+                Select::make('status')
+                    ->options(StatusEntrada::class)
+                    ->required(),
+                TextInput::make('precio_final')
                     ->required()
                     ->numeric(),
-                TextInput::make('sector')
+                TextInput::make('codigo_qr')
                     ->required(),
-                Select::make('status')
-                    ->options(['disponible' => 'Disponible', 'reservado' => 'Reservado', 'vendido' => 'Vendido'])
-                    ->required(),
-                TextInput::make('precio')
-                    ->required()
-                    ->numeric()
-                    ->prefix('€'),
             ]);
     }
 }

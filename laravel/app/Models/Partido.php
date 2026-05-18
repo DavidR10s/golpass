@@ -15,6 +15,7 @@ class Partido extends Model
         'estadio_id',
         'equipo_local_id',
         'equipo_visitante_id',
+        'precio_base',
         'fecha',
         'finalizado'
     ];
@@ -42,5 +43,10 @@ class Partido extends Model
     public function entradas(): HasMany
     {
         return $this->hasMany(Entrada::class);
+    }
+    
+    public function asientos(): HasMany
+    {
+        return $this->hasMany(Asiento::class);
     }
 }

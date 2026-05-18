@@ -3,7 +3,7 @@ namespace App\Enums;
 
 enum StatusEntrada: string
 {
-    case DISPONIBLE = 'disponible';
+    case CANCELADO = 'cancelado';
     case RESERVADO = 'reservado';
     case VENDIDO = 'vendido';
 }

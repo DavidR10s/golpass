@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Pago;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use App\Models\Partido;
+use App\Models\Asiento;
+use Stripe\Checkout\Session;
+use Illuminate\Support\Facades\Log;
 
 class PagoController extends Controller
 {
@@ -28,7 +33,56 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 1. Validación de entrada
+        $request->validate([
+            'asientos' => 'required|array',
+            'partido_id' => 'required|exists:partidos,id',
+        ]);
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $partido = Partido::with(['equipoLocal', 'equipoVisitante'])->findOrFail($request->partido_id);
+        $asientosIds = $request->asientos;
+
+        // 2. Verificación de seguridad: ¿Siguen los asientos disponibles?
+        $asientosDisponibles = Asiento::whereIn('id', $asientosIds)
+            ->where('status', 'disponible')
+            ->count();
+
+        if ($asientosDisponibles !== count($asientosIds)) {
+            return back()->with('error', 'Uno o más asientos ya no están disponibles.');
+        }
+
+        // 3. Crear la sesión de Stripe Checkout
+        try {
+            $montoTotal = count($asientosIds) * $partido->precio_base;
+
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => "Entradas: {$partido->equipoLocal->nombre} vs {$partido->equipoVisitante->nombre}",
+                            'description' => "Sector: " . Asiento::find($asientosIds[0])->sector,
+                        ],
+                        'unit_amount' => $montoTotal * 100, // En céntimos
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                // Pasamos los IDs de los asientos en la URL para procesarlos al volver
+                'success_url' => route('pago.exito') . '?session_id={CHECKOUT_SESSION_ID}&asientos=' . implode(',', $asientosIds),
+                'cancel_url' => route('pago.cancelado'),
+               // 'customer_email' => auth()->user()->email,
+            ]);
+
+            return redirect($session->url);
+
+        } catch (\Exception $e) {
+            Log::error("Error en Stripe: " . $e->getMessage());
+            return back()->with('error', 'No se pudo conectar con la pasarela de pago.');
+        }
     }
 
     /**

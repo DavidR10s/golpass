@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Filament\Resources\Asientos\Tables;
+
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class AsientosTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('partido.id')
+                    ->searchable(),
+                TextColumn::make('sector')
+                    ->searchable(),
+                TextColumn::make('fila')
+                    ->searchable(),
+                TextColumn::make('numero')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(fn($state) => match ($state->value ?? $state) {
+                        'disponible' => 'success',
+                        'reservado' => 'warning',
+                        'vendido' => 'danger',
+                    }),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}

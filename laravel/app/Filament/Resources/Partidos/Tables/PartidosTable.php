@@ -21,6 +21,9 @@ class PartidosTable
                     ->searchable(),
                 TextColumn::make('equipoVisitante.id')
                     ->searchable(),
+                TextColumn::make('precio_base')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('fecha')
                     ->dateTime()
                     ->sortable(),

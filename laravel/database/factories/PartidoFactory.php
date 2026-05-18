@@ -19,13 +19,21 @@ class PartidoFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        /*return [
             //
             'fecha'=> $this->faker->dateTimeBetween('now', '+2 months'),
             'finalizado'=> $this->faker->boolean(),
             'estadio_id' => Estadio::factory(),
             'equipo_local_id' => Equipo::factory(),
             'equipo_visitante_id' => Equipo::factory()
+        ];*/
+        return [
+            'estadio_id' => Estadio::factory(),
+            'equipo_local_id' => Equipo::factory(),
+            'equipo_visitante_id' => Equipo::factory(),
+            'precio_base' => $this->faker->numberBetween(10, 100), // Precio base entre 10 y 100
+            'fecha'=> $this->faker->dateTimeBetween('now', '+2 months'),
+            'finalizado'=> $this->faker->boolean()
         ];
     }
 }

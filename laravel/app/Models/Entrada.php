@@ -12,25 +12,32 @@ class Entrada extends Model
     //
     use HasFactory;
     protected $fillable = [
+        'order_id',
         'partido_id',
-        'entrada_id',
-        'n_asientos',
-        'sector',
+        'asiento_id',
         'status',
-        'precio'
+        'precio_final',
+        'codigo_qr',
     ];
 
+    protected $casts = [
+        'status' => StatusEntrada::class,
+        'precio_final' => 'decimal:2',
+    ];
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+    
     public function partido(): BelongsTo
     {
         return $this->belongsTo(Partido::class);
     }
 
-    protected function casts(): array
+    public function Asiento(): BelongsTo
     {
-        return [
-            'status' => StatusEntrada::class,
-        ];
+        return $this->belongsTo(Asiento::class);
     }
-
 
 }

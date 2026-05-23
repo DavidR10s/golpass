@@ -15,6 +15,7 @@ class Pago extends Model
         'metodo_pago',
         'transaccion_id',
         'status',
+        'fecha_pago',
         'payload_completo'
     ];
 

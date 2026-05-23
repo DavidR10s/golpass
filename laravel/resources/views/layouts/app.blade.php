@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="../img/iconoProyecto.png" type="image/x-icon">
 
     <title>{{ $title ?? config('app.name') }}</title>
+    
 
 </head>
 @php
@@ -42,6 +43,10 @@
     </nav>
     {{ $slot }}
 
+</div>
+    <footer class="p-6 bg-white mt-10 text-center text-gray-500">
+        &copy; {{ date('Y') }} GOLPASS. Todos los derechos reservados.
+    </footer>
 
 </body>
 

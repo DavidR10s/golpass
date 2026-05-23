@@ -7,19 +7,19 @@
             
             <div class="p-6 flex items-center justify-between">
                 <div class="text-center w-1/3">
-                    <a href="/equipo/{{ $partido['equipo_local']['id'] }}" class="font-bold text-gray-800">{{ $partido['equipo_local']['nombre'] }}</a>
+                    <a href="/equipo/{{ $partido->equipoLocal_id}}" class="font-bold text-gray-800">{{ $partido->equipoLocal?->nombre ?? 'Sin definir' }}</a>
                 </div>
 
                 <div class="text-xl font-black text-gray-400">VS</div>
 
                 <div class="text-center w-1/3">
-                    <a href="/equipo/{{ $partido['equipo_visitante']['id'] }}" class="font-bold text-gray-800">{{ $partido['equipo_visitante']['nombre'] }}</a>
+                    <a href="/equipo/{{ $partido->equipoVisitante_id }}" class="font-bold text-gray-800">{{ $partido->equipoVisitante?->nombre ?? 'Sin definir' }}</a>
                 </div>
             </div>
 
             <div class="px-6 pb-6 text-center">
-                <p class="text-sm text-gray-500 mb-4">🏟️ {{ $partido['estadio']['nombre'] }}</p>
-                <a href="/comprar/{{ $partido['id'] }}" class="inline-block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                <p class="text-sm text-gray-500 mb-4">🏟️ {{ $partido->Estadio?->nombre ?? 'Sin definir' }}</p>
+                <a href="/comprar/{{ $partido->id }}" class="inline-block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
                     Comprar Entradas
                 </a>
             </div>

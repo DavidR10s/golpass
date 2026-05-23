@@ -49,12 +49,6 @@ class UserCart extends Component
 
     public function render()
     {
-        /*return view('livewire.user-cart', [
-            'orders' => Order::where('user_id', Auth::id())
-            ->where('status', 'pending')
-            ->latest()
-            ->get()
-        ]);*/
 
         // Opcional: Mostrar órdenes antiguas pendientes de pago (si las hubiera)
         $orders = Order::where('user_id', Auth::id())

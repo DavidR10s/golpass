@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('partido_id')->constrained('partidos')->onDelete('cascade');
             $table->enum('status',['cancelado','reservado','vendido']);
             $table->decimal('precio_final', 10, 2);
-            $table->string('codigo_qr')->unique();
+            $table->string('codigo_qr')->unique()->nullable();
             $table->timestamps();
 
             //LOGICA: Un asiento no puede tener dos entradas para el mismo partido

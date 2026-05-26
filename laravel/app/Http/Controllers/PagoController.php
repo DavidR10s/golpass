@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pago;
+use App\Enums\StatusPago;
+use App\Enums\StatusOrder;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use App\Models\Partido;
 use App\Models\Asiento;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Log;
+use App\Models\Order;
+use Livewire\Component;
+use Exception;
 
 class PagoController extends Controller
 {
@@ -31,57 +36,71 @@ class PagoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    public function crearIntent(Order $order) // Pasamos el modelo directamente
     {
-        // 1. Validación de entrada
-        $request->validate([
-            'asientos' => 'required|array',
-            'partido_id' => 'required|exists:partidos,id',
-        ]);
+        /*dd([
+            'env_secret' => env('STRIPE_SECRET'),
+            'config_secret' => config('services.stripe.secret'),
+            'all_services' => config('services.stripe')
+        ]);*/
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $secretKey = config('services.stripe.secret');
 
-        $partido = Partido::with(['equipoLocal', 'equipoVisitante'])->findOrFail($request->partido_id);
-        $asientosIds = $request->asientos;
-
-        // 2. Verificación de seguridad: ¿Siguen los asientos disponibles?
-        $asientosDisponibles = Asiento::whereIn('id', $asientosIds)
-            ->where('status', 'disponible')
-            ->count();
-
-        if ($asientosDisponibles !== count($asientosIds)) {
-            return back()->with('error', 'Uno o más asientos ya no están disponibles.');
+        if (!$secretKey) {
+            throw new \Exception("La clave secreta de Stripe no está configurada correctamente.");
         }
 
-        // 3. Crear la sesión de Stripe Checkout
+        Stripe::setApiKey($secretKey);
+
+        $paymentIntent = \Stripe\PaymentIntent::create([
+            'amount' => (int)($order->cantidad_total * 100),
+            'currency' => 'eur',
+            'metadata' => ['order_id' => $order->id],
+        ]);
+
+
+        return $paymentIntent->client_secret;
+    }
+
+    public function exito(Request $request)
+    {
+        // Stripe devuelve el 'payment_intent' en la URL
         try {
-            $montoTotal = count($asientosIds) * $partido->precio_base;
+            $paymentIntentId = $request->get('payment_intent');
 
-            $session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'eur',
-                        'product_data' => [
-                            'name' => "Entradas: {$partido->equipoLocal->nombre} vs {$partido->equipoVisitante->nombre}",
-                            'description' => "Sector: " . Asiento::find($asientosIds[0])->sector,
-                        ],
-                        'unit_amount' => $montoTotal * 100, // En céntimos
-                    ],
-                    'quantity' => 1,
-                ]],
-                'mode' => 'payment',
-                // Pasamos los IDs de los asientos en la URL para procesarlos al volver
-                'success_url' => route('pago.exito') . '?session_id={CHECKOUT_SESSION_ID}&asientos=' . implode(',', $asientosIds),
-                'cancel_url' => route('pago.cancelado'),
-               // 'customer_email' => auth()->user()->email,
-            ]);
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $paymentIntent = \Stripe\PaymentIntent::retrieve($paymentIntentId);
 
-            return redirect($session->url);
+            // Guardar el registro de pago solo si no se ha guardado ya
+            if ($paymentIntent->status === 'succeeded') {
+                Pago::updateOrCreate(
+                    ['transaccion_id' => $paymentIntent->id],
+                    [
+                        'order_id'      => $paymentIntent->metadata->order_id,
+                        'metodo_pago'   => 'stripe',
+                        'transaccion_id' => $paymentIntent->id,
+                        'status'        => StatusPago::EXITO,
+                        'fecha_pago'    => now(),
+                        'payload_completo' => $paymentIntent->toArray(),
+                    ]
+                );
 
-        } catch (\Exception $e) {
-            Log::error("Error en Stripe: " . $e->getMessage());
-            return back()->with('error', 'No se pudo conectar con la pasarela de pago.');
+                // Actualizar el estado de la orden
+                $order = Order::find($paymentIntent->metadata->order_id);
+                if ($order) {
+                    $order->update(['status' => StatusOrder::COMPLETADO]);
+                }
+            }
+
+            return redirect()->route('pago-exito'); // Apunta a tu vista correcta
+        } catch (Exception $e) {
+            Log::error("Error al procesar el pago: " . $e->getMessage());
+            return response()->json([
+                'error_real' => $e->getMessage(),
+                'linea' => $e->getLine(),
+                'archivo' => $e->getFile()
+            ], 500);
         }
     }
 

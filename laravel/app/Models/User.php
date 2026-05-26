@@ -50,12 +50,12 @@ class User extends Authenticatable implements FilamentUser
         'role' => UserRole::class,
     ];
 
-    public function Order(): HasMany
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
-    public function Reservacion(): HasMany
+    public function reservaciones(): HasMany
     {
         return $this->hasMany(Reservacion::class);
     }

@@ -13,8 +13,12 @@
     <link rel="shortcut icon" href="../img/iconoProyecto.png" type="image/x-icon">
 
     <title>{{ $title ?? config('app.name') }}</title>
+    
 
 </head>
+@php
+    $nOrders = auth()->user()?->orders()->where('status', App\Enums\StatusOrder::PENDIENTE)->count() ?? 0;
+@endphp
 
 <body class="bg-gray-100">
     <nav class="p-6 bg-white shadow-md flex justify-between items-center">
@@ -23,7 +27,7 @@
         @auth
         <div class="justify-between items-center flex gap-4">
             <p>Bienvenido, {{ auth()->user()->name }}</p>
-            <a href=""><span class="material-symbols-outlined">shopping_cart</span><b class="text-red-500">0</b></a>
+            <a href="{{ route('user-cart') }}"><span class="material-symbols-outlined">shopping_cart</span><b class="text-red-500">{{ $nOrders }}</b></a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer" type="submit">Cerrar Sesión</button>
@@ -39,6 +43,10 @@
     </nav>
     {{ $slot }}
 
+</div>
+    <footer class="p-6 bg-white mt-10 text-center text-gray-500">
+        &copy; {{ date('Y') }} GOLPASS. Todos los derechos reservados.
+    </footer>
 
 </body>
 

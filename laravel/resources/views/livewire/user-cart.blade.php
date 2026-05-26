@@ -1,4 +1,4 @@
-<div class="p-6 max-w-4xl mx-auto">
+<div wire:poll.30s class="p-6 max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 flex items-center">
         <span class="mr-2">🛒</span> Mi Carrito de Entradas
     </h2>

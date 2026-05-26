@@ -29,6 +29,7 @@ class Order extends Model
 
     protected $casts = [
         'status' => StatusOrder::class,
+        'expires_at' => 'datetime',
     ];
 
     public function user()
@@ -43,5 +44,22 @@ class Order extends Model
 
     public function  Pago() : HasMany {
         return $this->hasMany(Pago::class);
+    }
+
+    public function isExpired(): bool
+    {
+        // Si ya está completada, no ha expirado
+        if (!$this->expires_at || $this->status === StatusOrder::COMPLETADO) 
+        {
+            return false;
+        }
+
+        return now()->greaterThan($this->expires_at);
+    }
+
+    public function scopeStillValid($query)
+    {
+        return $query->where('status', StatusOrder::PENDIENTE)
+                     ->where('expires_at', '>', now());
     }
 }

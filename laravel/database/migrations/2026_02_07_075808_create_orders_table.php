@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('numero_pedido')->unique(); // Ej: ORD-123456
             $table->decimal('cantidad_total', 10, 2);
             $table->enum('status', ['pendiente', 'completado', 'fallido'])->default('pendiente');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }

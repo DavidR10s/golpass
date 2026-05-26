@@ -68,7 +68,8 @@ class EntradasPartidos extends Component
             $this->asientosSeleccionados = [];
 
             // Usamos session flash para avisar al usuario en la siguiente página
-            session()->flash('message', 'Reserva creada correctamente.');
+            
+            //session()->flash('message', 'Reserva creada correctamente.');
 
             return redirect()->route('user-cart');
 

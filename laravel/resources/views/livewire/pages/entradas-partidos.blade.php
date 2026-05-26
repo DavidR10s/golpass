@@ -2,13 +2,13 @@
     <div id="componente" class="bg-green-50 shadow-md p-4 rounded-2xl text-center">
         <div id="component-partido" class="flex justify-evenly font-bold text-xl">
             <div>
-                <p>{{ $partido->equipoLocal->nombre }}</p>
+                <p class="hover:text-gray-700"><a href="/equipo/{{$partido->equipoLocal->id}}">{{ $partido->equipoLocal->nombre }}</a></p>
             </div>
             <div>
                 <p>VS</p>
             </div>
             <div>
-                <p>{{ $partido->equipoVisitante->nombre }}</p>
+                <p class="hover:text-gray-700"><a href="/equipo/{{$partido->equipoVisitante->id}}">{{ $partido->equipoVisitante->nombre }}</a></p>
             </div>
         </div>
 

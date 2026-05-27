@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StatusOrder;
 use App\Enums\StatusEntrada;
+use \App\Models\Asiento;
 
 class EntradasPartidos extends Component
 {
@@ -58,7 +59,7 @@ class EntradasPartidos extends Component
                     ]);
 
                     // 3. Opcional: Actualizar el estado del asiento físico si tienes esa columna
-                     \App\Models\Asiento::where('id', $asientoId)->update(['status' => 'reservado']);
+                    Asiento::where('id', $asientoId)->update(['status' => 'reservado']);
                 }
 
                 return $newOrder;

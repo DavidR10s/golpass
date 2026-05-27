@@ -8,6 +8,7 @@ use App\Enums\StatusOrder;
 use App\Enums\StatusAsiento;
 use App\Enums\StatusEntrada;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class ExpiraOrder extends Command
@@ -33,34 +34,43 @@ class ExpiraOrder extends Command
 
     public function handle()
     {
-        $expiredOrders = Order::where('status', StatusOrder::PENDIENTE)
-            ->where('expires_at', '<', now())
-            ->with('entradas.asiento')
-            ->get();
+        $ahora = now();
+        $this->info("Hora actual: " . $ahora->toDateTimeString());
 
-            if ($expiredOrders->isEmpty()) 
-            {
-                $this->info('No hay órdenes expiradas para procesar.');
-                return;
+        // Obtenemos las órdenes pendientes
+        $ordenes = Order::where('status', StatusOrder::PENDIENTE)->get();
+
+        if ($ordenes->isEmpty()) {
+            $this->warn("No hay órdenes pendientes en la base de datos.");
+            return;
+        }
+
+        foreach ($ordenes as $order) {
+            // Si expires_at llega como string por algún error de configuración, lo convertimos a Carbon
+            $fechaExpiracion = $order->expires_at ? Carbon::parse($order->expires_at) : null;
+
+            if (!$fechaExpiracion) {
+                $this->error("Orden ID: {$order->id} - Tiene fecha NULL en la base de datos.");
+                continue;
             }
 
-        foreach ($expiredOrders as $order) {
+            $this->line("Orden ID: {$order->id} | Expira: " . $fechaExpiracion->toDateTimeString());
 
-            $this->line("Procesando orden ID: {$order->id}...");
-            // Transacción para asegurar integridad
-            DB::transaction(function () use ($order) {
-                foreach ($order->entradas as $entrada) {
-                    // 1. Liberar el asiento
-                    $entrada->asiento->update(['status' => StatusAsiento::DISPONIBLE]);
+            if ($fechaExpiracion->lt($ahora)) {
+                $this->info("--> EXPIRADA. Procesando liberación...");
 
-                    // 2. Cancelar la entrada
-                    $entrada->update(['status' => StatusEntrada::CANCELADO]);
-                }
+                DB::transaction(function () use ($order) {
+                    foreach ($order->entradas as $entrada) {
+                        $entrada->asiento->update(['status' => StatusAsiento::DISPONIBLE]);
+                        $entrada->update(['status' => StatusEntrada::CANCELADO]);
+                    }
+                    $order->update(['status' => StatusOrder::EXPIRADA]);
+                });
 
-                // 3. Marcar la orden como fallida/expirada
-                $order->update(['status' => StatusOrder::EXPIRADA]);
-            });
-            $this->info("Orden {$order->id} expirada y asientos liberados.");
+                $this->info("--> Éxito: Orden {$order->id} expirada.");
+            } else {
+                $this->comment("--> Aún vigente. Faltan " . $ahora->diffInMinutes($fechaExpiracion) . " minutos.");
+            }
         }
     }
 }

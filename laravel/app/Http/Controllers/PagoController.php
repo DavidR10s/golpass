@@ -40,11 +40,6 @@ class PagoController extends Controller
 
     public function crearIntent(Order $order) // Pasamos el modelo directamente
     {
-        /*dd([
-            'env_secret' => env('STRIPE_SECRET'),
-            'config_secret' => config('services.stripe.secret'),
-            'all_services' => config('services.stripe')
-        ]);*/
         if ($order->isExpired()) 
         {
             throw new \Exception("No se puede procesar un pago de una orden expirada.");

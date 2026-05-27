@@ -25,6 +25,7 @@ class Order extends Model
         'numero_pedido',
         'cantidad_total',
         'status',
+        'expires_at',
     ];
 
     protected $casts = [

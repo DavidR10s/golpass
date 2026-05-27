@@ -17,6 +17,7 @@ class Checkout extends Component
         if ($order->isExpired()) 
         {
             session()->flash('error', 'El tiempo de reserva ha expirado.');
+            $this->dispatch('alert', 'El tiempo de reserva ha expirado.');
             return redirect()->route('user-cart'); // O a donde prefieras
         }
         $this->order = $order;

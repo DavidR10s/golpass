@@ -1,4 +1,4 @@
-<div class="p-6 max-w-4xl mx-auto" wire:poll.10s>
+<div class="p-6 max-w-4xl mx-auto">
     <div id="componente" class="bg-green-50 shadow-md p-4 rounded-2xl text-center">
         <div id="component-partido" class="flex justify-evenly font-bold text-xl">
             <div>
@@ -26,7 +26,7 @@
 
     </div>
 
-    <div class="grid grid-cols-10 gap-2 mb-8">
+    <div wire:poll.15s class="grid grid-cols-10 gap-2 mb-8">
         @foreach($asientos as $asiento)
         @php
 

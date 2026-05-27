@@ -7,13 +7,13 @@
             
             <div class="p-6 flex items-center justify-between">
                 <div class="text-center w-1/3">
-                    <a href="/equipo/{{ $partido->equipoLocal_id}}" class="font-bold text-gray-800">{{ $partido->equipoLocal?->nombre ?? 'Sin definir' }}</a>
+                    <a href="/equipo/{{ $partido->equipoLocal->id}}" class="font-bold text-gray-800">{{ $partido->equipoLocal?->nombre ?? 'Sin definir' }}</a>
                 </div>
 
                 <div class="text-xl font-black text-gray-400">VS</div>
 
                 <div class="text-center w-1/3">
-                    <a href="/equipo/{{ $partido->equipoVisitante_id }}" class="font-bold text-gray-800">{{ $partido->equipoVisitante?->nombre ?? 'Sin definir' }}</a>
+                    <a href="/equipo/{{ $partido->equipoVisitante->id }}" class="font-bold text-gray-800">{{ $partido->equipoVisitante?->nombre ?? 'Sin definir' }}</a>
                 </div>
             </div>
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Pages\Home;
 
+use App\Models\Order;
+
 use App\Livewire\Pages\EntradasPartidos;
 use App\Livewire\Pages\AsientoSector;
 use App\Livewire\Pages\DatosEquipo;
@@ -33,13 +35,31 @@ Route::middleware('auth')->group(function ()
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::livewire('comprar/{partido}', AsientoSector::class);
     Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
-    Route::get("test/exito", [\App\Http\Controllers\PagoController::class, 'exito'])->name('pages.pago-exito');
     Route::livewire('cart', \App\Livewire\UserCart::class)->name('user-cart');
 
     /*----------------------------------SISTEMA DE PAGO--------------------------------------*/
+    Route::get("test/exito", [\App\Http\Controllers\PagoController::class, 'exito'])->name('pages.pago-exito');
     Route::livewire('checkout/{order}', \App\Livewire\Pages\Checkout::class)->name('checkout');
     Route::livewire('pago-exito', \App\Livewire\Pages\PagoExito::class)->name('pago-exito');
     Route::livewire('pago-cancelado', \App\Livewire\Pages\PagoCancelado::class)->name('pago-cancelado');
+});
+
+
+
+/* TESTING*/
+Route::get('/test-expirar', function () {
+    $order = Order::where('status', \App\Enums\StatusOrder::PENDIENTE)->first();
+
+    if (!$order) {
+        return "No hay órdenes pendientes para modificar.";
+    }
+
+    // Le ponemos que expiró hace 20 minutos
+    $order->update([
+        'expires_at' => now()->subMinutes(20)
+    ]);
+
+    return "Orden ID: {$order->id} modificada. Ahora puedes ejecutar el comando en la terminal.";
 });
 
 //RUTA ESTADIOS

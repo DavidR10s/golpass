@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pago;
 use App\Enums\StatusPago;
 use App\Enums\StatusOrder;
+use App\Enums\StatusEntrada;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use App\Models\Partido;
@@ -39,11 +40,10 @@ class PagoController extends Controller
 
     public function crearIntent(Order $order) // Pasamos el modelo directamente
     {
-        /*dd([
-            'env_secret' => env('STRIPE_SECRET'),
-            'config_secret' => config('services.stripe.secret'),
-            'all_services' => config('services.stripe')
-        ]);*/
+        if ($order->isExpired()) 
+        {
+            throw new \Exception("No se puede procesar un pago de una orden expirada.");
+        }
 
         $secretKey = config('services.stripe.secret');
 
@@ -90,11 +90,13 @@ class PagoController extends Controller
                 $order = Order::find($paymentIntent->metadata->order_id);
                 if ($order) {
                     $order->update(['status' => StatusOrder::COMPLETADO]);
+                    $order->entradas()->update(['status' => StatusEntrada::VENDIDO]); // O el status que corresponda
                 }
             }
 
             return redirect()->route('pago-exito'); // Apunta a tu vista correcta
-        } catch (Exception $e) {
+        } catch (Exception $e) 
+        {
             Log::error("Error al procesar el pago: " . $e->getMessage());
             return response()->json([
                 'error_real' => $e->getMessage(),

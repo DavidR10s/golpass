@@ -6,11 +6,11 @@ use Livewire\Component;
 
 use App\Models\Partido;
 use App\Models\Order;
-use App\Models\Entrada;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StatusOrder;
 use App\Enums\StatusEntrada;
+use \App\Models\Asiento;
 
 class EntradasPartidos extends Component
 {
@@ -40,11 +40,12 @@ class EntradasPartidos extends Component
             $order = DB::transaction(function () {
                 // 1. Crear la Orden
                 // IMPORTANTE: Asegúrate de que StatusOrder::Pending sea el caso correcto en tu App\Enums\StatusOrder
-                $newOrder = \App\Models\Order::create([
+                $newOrder = Order::create([
                     'user_id' => Auth::id(),
                     'numero_pedido' => 'ORD-' . strtoupper(uniqid()), // Genera un número de pedido único
                     'cantidad_total' => count($this->asientosSeleccionados) * 15.00,
-                    'status' => \App\Enums\StatusOrder::PENDIENTE, 
+                    'status' => StatusOrder::PENDIENTE, 
+                    'expires_at' => now()->addMinutes(15), // La orden expira en 15 minutos
                 ]);
 
                 // 2. Crear las Entradas vinculadas
@@ -52,13 +53,13 @@ class EntradasPartidos extends Component
                     $newOrder->Entradas()->create([
                         'partido_id' => $this->partido->id,
                         'asiento_id' => $asientoId,
-                        'status' => \App\Enums\StatusEntrada::RESERVADO, // Verifica si aquí también usas Enum o String
+                        'status' => StatusEntrada::RESERVADO, // Verifica si aquí también usas Enum o String
                         'precio_final' => 15.00,
                         'codigo_qr' => 'QR-' . strtoupper(uniqid()), // Genera un código QR único
                     ]);
 
                     // 3. Opcional: Actualizar el estado del asiento físico si tienes esa columna
-                     \App\Models\Asiento::where('id', $asientoId)->update(['status' => 'reservado']);
+                    Asiento::where('id', $asientoId)->update(['status' => 'reservado']);
                 }
 
                 return $newOrder;
@@ -68,7 +69,8 @@ class EntradasPartidos extends Component
             $this->asientosSeleccionados = [];
 
             // Usamos session flash para avisar al usuario en la siguiente página
-            session()->flash('message', 'Reserva creada correctamente.');
+            
+            //session()->flash('message', 'Reserva creada correctamente.');
 
             return redirect()->route('user-cart');
 

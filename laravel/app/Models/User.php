@@ -55,10 +55,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Order::class);
     }
 
-    public function reservaciones(): HasMany
-    {
-        return $this->hasMany(Reservacion::class);
-    }
 
     /* SEGURIDAD DE FILAMENT
      */

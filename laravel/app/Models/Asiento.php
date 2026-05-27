@@ -28,10 +28,6 @@ class Asiento extends Model
         return $this->belongsTo(Partido::class);
     }
     
-    public function reservacion()
-    {
-        return $this->hasOne(Reservacion::class);
-    }
 
     public function entrada()
     {

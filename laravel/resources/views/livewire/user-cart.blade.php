@@ -1,4 +1,4 @@
-<div class="p-6 max-w-4xl mx-auto">
+<div wire:poll.30s class="p-6 max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 flex items-center">
         <span class="mr-2">🛒</span> Mi Carrito de Entradas
     </h2>
@@ -9,6 +9,13 @@
             <div>
                 <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Número de Pedido</p>
                 <p class="font-mono text-lg text-indigo-700">{{ $order->numero_pedido }}</p>
+                <p class="text-sm text-gray-500">
+                    @if($order->isExpired())
+                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-bold">Expirada</span>
+                    @else
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-bold">Pendiente</span>
+                    @endif
+                </p>
             </div>
             <div class="text-right">
                 <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Fecha</p>

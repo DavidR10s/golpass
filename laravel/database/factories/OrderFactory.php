@@ -22,7 +22,7 @@ class OrderFactory extends Factory
             'user_id' => User::factory(),
             'numero_pedido' => $this->faker->unique()->numerify('ORD-#####'),
             'cantidad_total' => $this->faker->numberBetween(1, 5),
-            'status' => $this->faker->randomElement(['pendiente', 'completado', 'fallido']),
+            'status' => $this->faker->randomElement(['pendiente', 'completado','expirada' ,'fallido']),
 
         ];
     }

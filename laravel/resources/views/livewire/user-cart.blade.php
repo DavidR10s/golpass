@@ -3,6 +3,26 @@
         <span class="mr-2">🛒</span> Mi Carrito de Entradas
     </h2>
 
+    {{-- Botones de filtro --}}
+    <div class="flex space-x-2 mb-6">
+        <button wire:click="setFiltro('todos')"
+            class="{{ $filtro === 'todos' ? 'bg-gray-800 text-white' : 'bg-white text-gray-600 border border-gray-300' }} px-4 py-2 rounded-lg font-semibold text-sm transition">
+            Todas
+        </button>
+        <button wire:click="setFiltro('pendiente')"
+            class="{{ $filtro === 'pendiente' ? 'bg-yellow-500 text-white' : 'bg-white text-yellow-600 border border-yellow-300' }} px-4 py-2 rounded-lg font-semibold text-sm transition">
+             Pendientes
+        </button>
+        <button wire:click="setFiltro('completado')"
+            class="{{ $filtro === 'completado' ? 'bg-green-600 text-white' : 'bg-white text-green-600 border border-green-300' }} px-4 py-2 rounded-lg font-semibold text-sm transition">
+            Completadas
+        </button>
+        <button wire:click="setFiltro('expirada')"
+            class="{{ $filtro === 'expirada' ? 'bg-red-600 text-white' : 'bg-white text-red-600 border border-red-300' }} px-4 py-2 rounded-lg font-semibold text-sm transition">
+             Expiradas
+        </button>
+    </div>
+
     @forelse($orders as $order)
     <div class="bg-white shadow-lg rounded-xl mb-6 overflow-hidden border border-gray-100">
         <div class="bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
@@ -60,11 +80,22 @@
                     class="text-red-600 hover:text-red-800 font-semibold text-sm px-4 py-2 cursor-pointer">
                     Cancelar
                 </button>
-
-                <a href="{{ route('checkout', $order->id) }}"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition shadow-md shadow-indigo-200 cursor-pointer">
-                    Ir a Pagar
-                </a>
+                @if($order->isExpired())
+                <a disabled href="{{ route('checkout', $order->id) }}"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition shadow-md shadow-indigo-200 opacity-50 cursor-not-allowed">
+                        Ir a Pagar
+                    </a>
+                @elseif($order->isCompleted())
+                    <a href="{{ route('mis-entradas', $order->entradas->first()->id) }}"
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold transition shadow-md shadow-green-200 cursor-pointer">
+                        Ver Mi Entrada
+                    </a>
+                @else
+                    <a href="{{ route('checkout', $order->id) }}"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition shadow-md shadow-indigo-200 cursor-pointer">
+                        Ir a Pagar
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -72,7 +103,7 @@
     <div class="text-center py-12 bg-white rounded-xl shadow-sm border-2 border-dashed border-gray-200">
         <p class="text-gray-400 text-5xl mb-4">🎫</p>
         <p class="text-gray-600 font-medium">No tienes reservas pendientes de pago.</p>
-        <a href="{{ route('partidos.index') }}" class="mt-4 inline-block text-indigo-600 font-bold hover:underline">
+        <a href="/" class="mt-4 inline-block text-indigo-600 font-bold hover:underline">
             Ir a ver partidos
         </a>
     </div>

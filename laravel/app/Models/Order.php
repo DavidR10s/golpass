@@ -57,6 +57,14 @@ class Order extends Model
 
         return now()->greaterThan($this->expires_at);
     }
+    public function isPending(): bool
+    {
+        return $this->status === StatusOrder::PENDIENTE;
+    }
+    public function isCompleted(): bool
+    {
+        return $this->status === StatusOrder::COMPLETADO;
+    }
 
     public function scopeStillValid($query)
     {

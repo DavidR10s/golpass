@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\DB;
 
 class UserCart extends Component
 {
+    public $filtro = 'todos';
+
+    public function setFiltro($filtro)
+    {
+        $this->filtro = $filtro;
+    }
 
     public function eliminarOrden($orderId)
     {
@@ -50,11 +56,14 @@ class UserCart extends Component
     public function render()
     {
 
-        // Opcional: Mostrar órdenes antiguas pendientes de pago (si las hubiera)
-        $orders = Order::where('user_id', Auth::id())
-            ->where('status', StatusOrder::PENDIENTE) // O puedes mostrar todas las órdenes sin filtrar por estado
-            ->latest()
-            ->get();
+
+        $query = Order::where('user_id', Auth::id())->latest();
+
+        if ($this->filtro !== 'todos') {
+            $query->where('status', $this->filtro);
+        }
+
+        $orders = $query->get();
 
         return view('livewire.user-cart', [
             'orders' => $orders,

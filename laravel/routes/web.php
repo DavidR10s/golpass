@@ -1,8 +1,4 @@
 <?php
-
-use App\Http\Controllers\EquipoController;
-use App\Http\Controllers\EstadioController;
-use App\Http\Controllers\PartidoController;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Pages\Home;
@@ -12,6 +8,11 @@ use App\Models\Order;
 use App\Livewire\Pages\EntradasPartidos;
 use App\Livewire\Pages\AsientoSector;
 use App\Livewire\Pages\DatosEquipo;
+use App\Livewire\Pages\Checkout;
+use App\Livewire\Pages\PagoExito;
+use App\Livewire\Pages\PagoCancelado;
+use App\Livewire\Pages\MisEntradas;
+use App\Livewire\UserCart;
 use App\Http\Controllers\AuthController;
 
 /*Route::get('/', function () {
@@ -35,14 +36,14 @@ Route::middleware('auth')->group(function ()
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::livewire('comprar/{partido}', AsientoSector::class);
     Route::livewire('comprar/{partido}/{sectorSeleccionado}', EntradasPartidos::class)->name('entradas-partidos');
-    Route::livewire('cart', \App\Livewire\UserCart::class)->name('user-cart');
+    Route::livewire('cart', UserCart::class)->name('user-cart');
 
     /*----------------------------------SISTEMA DE PAGO--------------------------------------*/
     Route::get("test/exito", [\App\Http\Controllers\PagoController::class, 'exito'])->name('pages.pago-exito');
-    Route::livewire('checkout/{order}', \App\Livewire\Pages\Checkout::class)->name('checkout');
-    Route::livewire('pago-exito', \App\Livewire\Pages\PagoExito::class)->name('pago-exito');
-    Route::livewire('pago-cancelado', \App\Livewire\Pages\PagoCancelado::class)->name('pago-cancelado');
-});
+    Route::livewire('checkout/{order}', Checkout::class)->name('checkout');
+    Route::livewire('pago-exito', PagoExito::class)->name('pago-exito');
+    Route::livewire('pago-cancelado', PagoCancelado::class)->name('pago-cancelado');
+    Route::livewire('cart/entradas/{entrada}', MisEntradas::class)->name('mis-entradas');
 
 
 
@@ -60,14 +61,7 @@ Route::get('/test-expirar', function () {
     ]);
 
     return "Orden ID: {$order->id} modificada. Ahora puedes ejecutar el comando en la terminal.";
-});
+        });
+    });
 
-//RUTA ESTADIOS
-Route::resource('estadios', EstadioController::class);
-
-//RUTA PARTIDOS
-Route::resource('partidos', PartidoController::class);
-
-//RUTA EQUIPOS
-Route::resource('equipos', EquipoController::class);
 

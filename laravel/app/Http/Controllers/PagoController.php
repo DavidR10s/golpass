@@ -6,14 +6,12 @@ use App\Models\Pago;
 use App\Enums\StatusPago;
 use App\Enums\StatusOrder;
 use App\Enums\StatusEntrada;
+use App\Enums\StatusAsiento;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
-use App\Models\Partido;
-use App\Models\Asiento;
-use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
-use Livewire\Component;
 use Exception;
 
 class PagoController extends Controller
@@ -42,18 +40,18 @@ class PagoController extends Controller
     {
         if ($order->isExpired()) 
         {
-            throw new \Exception("No se puede procesar un pago de una orden expirada.");
+            throw new Exception("No se puede procesar un pago de una orden expirada.");
         }
 
         $secretKey = config('services.stripe.secret');
 
         if (!$secretKey) {
-            throw new \Exception("La clave secreta de Stripe no está configurada correctamente.");
+            throw new Exception("La clave secreta de Stripe no está configurada correctamente.");
         }
 
         Stripe::setApiKey($secretKey);
 
-        $paymentIntent = \Stripe\PaymentIntent::create([
+        $paymentIntent = PaymentIntent::create([
             'amount' => (int)($order->cantidad_total * 100),
             'currency' => 'eur',
             'metadata' => ['order_id' => $order->id],
@@ -70,7 +68,7 @@ class PagoController extends Controller
             $paymentIntentId = $request->get('payment_intent');
 
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-            $paymentIntent = \Stripe\PaymentIntent::retrieve($paymentIntentId);
+            $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
 
             // Guardar el registro de pago solo si no se ha guardado ya
             if ($paymentIntent->status === 'succeeded') {
@@ -91,6 +89,10 @@ class PagoController extends Controller
                 if ($order) {
                     $order->update(['status' => StatusOrder::COMPLETADO]);
                     $order->entradas()->update(['status' => StatusEntrada::VENDIDO]); // O el status que corresponda
+                    foreach($order->entradas as $entrada)
+                    {
+                        $entrada->Asiento()->update(['status' => StatusAsiento::VENDIDO]);
+                    }
                 }
             }
 

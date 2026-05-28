@@ -27,6 +27,8 @@ class OrdersTable
                     ->color(fn ($state) => match ($state->value ?? $state) {
                         'pendiente' => 'warning',
                         'completado' => 'success',
+                        'cancelado' => 'secondary',
+                        'expirada' => 'gray',
                         'fallido' => 'danger',
                     }),
                 TextColumn::make('created_at')

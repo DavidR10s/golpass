@@ -22,7 +22,7 @@ class AsientoSector extends Component
                 'partido' => $this->partido->id,
                 'sector' => $sectorNombre
             ]),
-            navigate: true // Para mantener la sensación de SPA
+            navigate: true 
         );
     }
 

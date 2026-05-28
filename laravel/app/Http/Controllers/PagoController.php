@@ -6,6 +6,7 @@ use App\Models\Pago;
 use App\Enums\StatusPago;
 use App\Enums\StatusOrder;
 use App\Enums\StatusEntrada;
+use App\Enums\StatusAsiento;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -88,6 +89,10 @@ class PagoController extends Controller
                 if ($order) {
                     $order->update(['status' => StatusOrder::COMPLETADO]);
                     $order->entradas()->update(['status' => StatusEntrada::VENDIDO]); // O el status que corresponda
+                    foreach($order->entradas as $entrada)
+                    {
+                        $entrada->Asiento()->update(['status' => StatusAsiento::VENDIDO]);
+                    }
                 }
             }
 

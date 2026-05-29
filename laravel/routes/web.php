@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function ()
     Route::livewire('cart', UserCart::class)->name('user-cart');
 
     /*----------------------------------SISTEMA DE PAGO--------------------------------------*/
-    Route::get("test/exito", [\App\Http\Controllers\PagoController::class, 'exito'])->name('pages.pago-exito');
     Route::livewire('checkout/{order}', Checkout::class)->name('checkout');
+    Route::get("test/exito", [\App\Http\Controllers\PagoController::class, 'exito'])->name('pages.pago-exito'); //Esto es un testing para ejecutar un pago exitoso
     Route::livewire('pago-exito', PagoExito::class)->name('pago-exito');
     Route::livewire('pago-cancelado', PagoCancelado::class)->name('pago-cancelado');
     Route::livewire('cart/entradas/{entrada}', MisEntradas::class)->name('mis-entradas');

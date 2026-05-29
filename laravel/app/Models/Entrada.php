@@ -36,7 +36,7 @@ class Entrada extends Model
             return '';
         }
 
-        // Creamos el QR usando el campo de tu base de datos
+        // Creamos el QR usando el campo en la base de datos
         $qrCode = new QrCode(
             data: $this->codigo_qr,
             encoding: new Encoding('UTF-8'),

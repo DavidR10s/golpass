@@ -1,4 +1,4 @@
-<div class="p-4 bg-gray-100 flex justify-center">
+<div class=" p-4 bg-gray-100 justify-center">
     @if($entrada->codigo_qr)
     <img src="{{ $entrada->qr_code_image }}" alt="QR de Entrada">
     @else

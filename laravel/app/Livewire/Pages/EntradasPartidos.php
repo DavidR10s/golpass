@@ -39,8 +39,6 @@ class EntradasPartidos extends Component
         try {
             $order = DB::transaction(function () {
                 // 1. Crear la Orden
-                // IMPORTANTE: Asegúrate de que StatusOrder::Pending sea el caso correcto en tu App\Enums\StatusOrder
-                
                 //Switch para cada que cada asiento de un sector tenga precios distintos
                 switch($this->sectorSeleccionado)
                 {

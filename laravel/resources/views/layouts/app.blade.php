@@ -41,10 +41,11 @@
             </div>
         @endguest
     </nav>
-    {{ $slot }}
+    <main class="flex flex-1  mx-auto mt-10 justify-center">
+        {{ $slot }}
+    </main>
 
-</div>
-    <footer class="p-6 bg-white mt-10 text-center text-gray-500">
+    <footer class="bg-white text-gray-500 p-6 text-center mt-10">
         &copy; {{ date('Y') }} GOLPASS. Todos los derechos reservados.
     </footer>
 

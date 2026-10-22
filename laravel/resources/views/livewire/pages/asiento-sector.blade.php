@@ -1,4 +1,4 @@
-<div id="padre" class="flex flex-col text-center m-12">
+<div id="padre" class="text-center m-12">
     <div id="componente" class="bg-green-50 shadow-md p-4 rounded-2xl">
         <div id="component-partido" class="flex justify-evenly font-bold text-xl">
             <div><p>{{ $partido->equipoLocal->nombre }}</p></div>
@@ -19,7 +19,7 @@
 
         <a href="{{ route('entradas-partidos', [$partido->id, 'Tribuna']) }}"
             wire:navigate
-            class="block bg-gray-400 rounded-xl h-16 flex items-center justify-center hover:bg-gray-600 text-white transition">
+            class="flex bg-gray-400 rounded-xl h-16 items-center justify-center hover:bg-gray-600 text-white transition">
             Tribuna - {{ $partido->asientos->where('sector', 'Tribuna')->where('status', 'disponible')->count() }} asientos disponibles
         </a>
 
@@ -43,7 +43,7 @@
 
         <a href="{{ route('entradas-partidos', [$partido->id, 'Preferencia']) }}"
             wire:navigate
-            class="block bg-gray-400 rounded-xl h-16 flex items-center justify-center hover:bg-gray-600 text-white transition">
+            class="bg-gray-400 rounded-xl h-16 flex items-center justify-center hover:bg-gray-600 text-white transition">
             Preferencia - {{ $partido->asientos->where('sector', 'Preferencia')->where('status', 'disponible')->count() }} asientos disponibles
         </a>
 

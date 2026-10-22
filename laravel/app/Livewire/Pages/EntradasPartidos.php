@@ -39,14 +39,47 @@ class EntradasPartidos extends Component
         try {
             $order = DB::transaction(function () {
                 // 1. Crear la Orden
-                // IMPORTANTE: Asegúrate de que StatusOrder::Pending sea el caso correcto en tu App\Enums\StatusOrder
-                $newOrder = Order::create([
-                    'user_id' => Auth::id(),
-                    'numero_pedido' => 'ORD-' . strtoupper(uniqid()), // Genera un número de pedido único
-                    'cantidad_total' => count($this->asientosSeleccionados) * 15.00,
-                    'status' => StatusOrder::PENDIENTE, 
-                    'expires_at' => now()->addMinutes(15), // La orden expira en 15 minutos
-                ]);
+                //Switch para cada que cada asiento de un sector tenga precios distintos
+                switch($this->sectorSeleccionado)
+                {
+                    case 'Sur':
+                        $newOrder = Order::create([
+                            'user_id' => Auth::id(),
+                            'numero_pedido' => 'ORD-' . strtoupper(uniqid()), // Genera un número de pedido único
+                            'cantidad_total' => count($this->asientosSeleccionados) * 15.00,
+                            'status' => StatusOrder::PENDIENTE, 
+                            'expires_at' => now()->addMinutes(15), // La orden expira en 15 minutos
+                        ]);
+                    break;
+                    case 'Norte':
+                        $newOrder = Order::create([
+                            'user_id' => Auth::id(),
+                            'numero_pedido' => 'ORD-' . strtoupper(uniqid()), // Genera un número de pedido único
+                            'cantidad_total' => count($this->asientosSeleccionados) * 15.00,
+                            'status' => StatusOrder::PENDIENTE, 
+                            'expires_at' => now()->addMinutes(15), // La orden expira en 15 minutos
+                        ]);
+                    break;
+                    case 'Tribuna':
+                        $newOrder = Order::create([
+                            'user_id' => Auth::id(),
+                            'numero_pedido' => 'ORD-' . strtoupper(uniqid()), // Genera un número de pedido único
+                            'cantidad_total' => count($this->asientosSeleccionados) * 17.00,
+                            'status' => StatusOrder::PENDIENTE, 
+                            'expires_at' => now()->addMinutes(15), // La orden expira en 15 minutos
+                        ]);
+                    break;
+                    case 'Preferencia':
+                        $newOrder = Order::create([
+                            'user_id' => Auth::id(),
+                            'numero_pedido' => 'ORD-' . strtoupper(uniqid()), // Genera un número de pedido único
+                            'cantidad_total' => count($this->asientosSeleccionados) * 20.00,
+                            'status' => StatusOrder::PENDIENTE, 
+                            'expires_at' => now()->addMinutes(15), // La orden expira en 15 minutos
+                        ]);
+
+                }
+                
 
                 // 2. Crear las Entradas vinculadas
                 foreach ($this->asientosSeleccionados as $asientoId) {

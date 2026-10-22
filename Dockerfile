@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.2.35-apache
 
 # 1. Definir el ID de usuario (el estándar en Linux suele ser 1000)
 ARG USER_ID=1000
